@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account Status{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/account_status.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<main class="account-status-page">
+
+    <div class="account-status-card">
+
+        <!-- LOGO -->
+        <div class="account-status-logo">
+            Minto
+        </div>
+
+
+        {% if request.user.banned %}
+
+            <!-- =========================
+                 RESTRICTED ACCOUNT
+                 ========================= -->
+
+            <h1 class="account-status-title">
+                Account Status
+            </h1>
+
+            <p class="account-status-warning">
+                Your account has been restricted.
+            </p>
+
+            <p class="account-status-description">
+                Your account has been restricted for violating our
+                community rules. Please review the information below.
+            </p>
+
+
+            <!-- BAN INFORMATION -->
+            <div class="account-status-info">
+
+                {% if request.user.ban_reason %}
+
+                    <p>
+                        <strong>Reason:</strong>
+                        {{ request.user.ban_reason }}
+                    </p>
+
+                {% endif %}
+
+
+                {% if request.user.ban_until %}
+
+                    <p>
+                        <strong>Ban until:</strong>
+                        {{ request.user.ban_until|date:"d.m.Y H:i" }}
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        <strong>Ban duration:</strong>
+                        Permanent
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SUPPORT -->
+            <a
+                href="{% url 'support' %}"
+                class="account-status-button"
+            >
+                Contact Support
+            </a>
+
+
+        {% else %}
+
+            <!-- =========================
+                 GOOD STANDING
+                 ========================= -->
+
+            <h1 class="account-status-title">
+                Account Status
+            </h1>
+
+            <p class="account-status-good">
+                Your account is in good standing.
+            </p>
+
+            <p class="account-status-description">
+                You currently have no active restrictions on your account.
+            </p>
+
+
+            <!-- ACCOUNT INFORMATION -->
+            <div class="account-status-info">
+
+                <p>
+                    <strong>Status:</strong>
+                    No active restrictions
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+{% endblock %}

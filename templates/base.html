@@ -1,0 +1,388 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+            Minto
+        {% endblock %}
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+<div class="minto-layout">
+
+
+    <!-- ==================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ==================================================== -->
+
+    <aside class="minto-sidebar">
+
+
+        <!-- ================================================= -->
+        <!-- LOGO -->
+        <!-- ================================================= -->
+
+        <div class="minto-logo">
+            Minto
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SEARCH -->
+        <!-- ================================================= -->
+
+        <div class="minto-search">
+
+            <form
+                method="GET"
+                action="{% url 'search' %}"
+                id="search-form"
+            >
+
+                <input
+                    type="text"
+                    name="q"
+                    id="search-input"
+                    placeholder="Search videos or creators."
+                    aria-label="Search videos or creators"
+                    autocomplete="off"
+                >
+
+            </form>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- NAVIGATION -->
+        <!-- ================================================= -->
+
+        <nav class="minto-navigation">
+
+
+            <!-- ================================================= -->
+            <!-- FOR YOU -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'feed' %}"
+                class="sidebar-link"
+                data-nav="feed"
+            >
+
+                <span class="sidebar-icon">
+                    🔥
+                </span>
+
+                <span>
+                    For You
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- FOLLOWED -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'followed' %}"
+                class="sidebar-link"
+                data-nav="followed"
+            >
+
+                <span class="sidebar-icon">
+                    👥
+                </span>
+
+                <span>
+                    Followed
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- CREATE VIDEO -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'create_video' %}"
+                class="sidebar-link"
+                data-nav="create_video"
+            >
+
+                <span class="sidebar-icon">
+                    ➕
+                </span>
+
+                <span>
+                    Create Video
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- PROFILE -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'profile' request.user.username %}"
+                class="sidebar-link"
+                data-nav="profile"
+            >
+
+                <span class="sidebar-icon">
+                    👤
+                </span>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- ACCOUNT STATUS -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'account_status' %}"
+                class="sidebar-link"
+                data-nav="account_status"
+            >
+
+                <span class="sidebar-icon">
+                    ✅
+                </span>
+
+                <span>
+                    Account Status
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- REPORT -->
+            <!-- ================================================= -->
+
+            <a
+                href="{% url 'report' %}"
+                class="sidebar-link"
+                data-nav="report"
+            >
+
+                <span class="sidebar-icon">
+                    🚩
+                </span>
+
+                <span>
+                    Report
+                </span>
+
+            </a>
+
+
+            <!-- ================================================= -->
+            <!-- SIGN IN -->
+            <!-- ================================================= -->
+
+            <a
+                href="#"
+                class="sidebar-link signin-button"
+            >
+
+                <span>
+                    Sign In
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- ================================================= -->
+        <!-- BOTTOM -->
+        <!-- ================================================= -->
+
+        <div class="minto-sidebar-bottom">
+
+            <div class="minto-copyright">
+                © Minto Video Platform
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- ==================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ==================================================== -->
+
+    <main class="minto-main">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+</div>
+
+
+<!-- ======================================================== -->
+<!-- BASE JS -->
+<!-- ======================================================== -->
+
+<script src="{% static 'js/base.js' %}"></script>
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+<!-- ======================================================== -->
+<!-- ACTIVE NAVIGATION -->
+<!-- ======================================================== -->
+
+{% if request.user.is_authenticated and not request.user.banned %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const navigationLinks = document.querySelectorAll(
+        ".minto-navigation .sidebar-link"
+    );
+
+
+    // Получаем последнюю нажатую кнопку
+
+    let activeNav = localStorage.getItem(
+        "minto_active_nav"
+    );
+
+
+    // Если пользователь ещё ничего не нажимал,
+    // подсвечиваем For You
+
+    if (!activeNav) {
+
+        activeNav = "feed";
+
+    }
+
+
+    // Устанавливаем подсветку
+
+    navigationLinks.forEach(function (link) {
+
+        const navName = link.dataset.nav;
+
+        if (navName === activeNav) {
+
+            link.classList.add(
+                "sidebar-link-active"
+            );
+
+        } else {
+
+            link.classList.remove(
+                "sidebar-link-active"
+            );
+
+        }
+
+    });
+
+
+    // Запоминаем последнюю нажатую кнопку
+
+    navigationLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            const navName = link.dataset.nav;
+
+            localStorage.setItem(
+                "minto_active_nav",
+                navName
+            );
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% else %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Забанированный пользователь
+    // не должен иметь активную кнопку
+
+    localStorage.removeItem(
+        "minto_active_nav"
+    );
+
+
+    const navigationLinks = document.querySelectorAll(
+        ".minto-navigation .sidebar-link"
+    );
+
+
+    navigationLinks.forEach(function (link) {
+
+        link.classList.remove(
+            "sidebar-link-active"
+        );
+
+    });
+
+});
+
+</script>
+
+{% endif %}
+
+
+</body>
+
+</html>

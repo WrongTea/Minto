@@ -1,0 +1,705 @@
+/* ============================================================
+   SEARCH PAGE
+   ============================================================ */
+
+.search-page {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding:
+        45px
+        55px;
+
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.search-page-header {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto 45px;
+}
+
+
+.search-page-title {
+    margin: 0 0 22px;
+
+    font-size: 34px;
+
+    font-weight: 700;
+}
+
+
+.search-form {
+    width: 100%;
+
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.search-page-input {
+    flex: 1;
+
+    height: 58px;
+
+    padding:
+        0
+        20px;
+
+    border:
+        1px solid #303038;
+
+    border-radius: 15px;
+
+    outline: none;
+
+    background: #202025;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.search-page-input::placeholder {
+    color: #858b9b;
+}
+
+
+.search-page-input:focus {
+    border-color: #6257ff;
+
+    background: #25252b;
+}
+
+
+.search-submit {
+    height: 58px;
+
+    padding:
+        0
+        28px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: #5145e5;
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.search-submit:hover {
+    background: #6257ff;
+}
+
+
+.search-submit:active {
+    transform: scale(0.97);
+}
+
+
+/* ============================================================
+   SECTION
+   ============================================================ */
+
+.search-people-section,
+.search-videos-section {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin:
+        0 auto
+        38px;
+}
+
+
+.search-section-title {
+    margin:
+        0 0 18px;
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   PEOPLE CAROUSEL
+   ============================================================ */
+
+.people-carousel {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.people-list {
+    display: flex;
+
+    gap: 18px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+
+    padding:
+        5px
+        4px
+        12px;
+}
+
+
+.people-list::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ============================================================
+   PERSON CARD
+   ============================================================ */
+
+.person-card {
+    flex:
+        0 0 120px;
+
+    width: 120px;
+
+    padding:
+        10px
+        7px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-decoration: none;
+
+    color: #ffffff;
+
+    border-radius: 14px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.person-card:hover {
+    background: #1c1c22;
+
+    transform: translateY(-2px);
+}
+
+
+.person-avatar {
+    width: 78px;
+
+    height: 78px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    background: #303038;
+
+    border:
+        2px solid #35353e;
+}
+
+
+.person-avatar-empty {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #6257ff;
+
+    color: #ffffff;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+
+.person-name {
+    width: 100%;
+
+    margin-top: 9px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.person-username {
+    width: 100%;
+
+    margin-top: 3px;
+
+    color: #7f8595;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   PEOPLE ARROWS
+   ============================================================ */
+
+.people-arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    z-index: 10;
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #2a2a31;
+
+    color: #ffffff;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.35);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.people-arrow:hover {
+    background: #6257ff;
+
+    transform:
+        translateY(-50%)
+        scale(1.05);
+}
+
+
+.people-arrow-left {
+    left: -18px;
+}
+
+
+.people-arrow-right {
+    right: -18px;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ============================================================
+   VIDEOS GRID
+   ============================================================ */
+
+.search-videos-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(210px, 1fr)
+        );
+
+    gap: 20px;
+}
+
+
+/* ============================================================
+   VIDEO CARD
+   ============================================================ */
+
+.search-video-card {
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: #19191e;
+
+    border:
+        1px solid #29292f;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.search-video-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #3b3b45;
+}
+
+
+/* ============================================================
+   VIDEO MEDIA
+   ============================================================ */
+
+.search-video-media {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 9 / 14;
+
+    overflow: hidden;
+
+    background: #101014;
+}
+
+
+.search-video-preview {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+.search-video-overlay {
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    padding:
+        35px
+        12px
+        10px;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(0, 0, 0, 0.8)
+        );
+
+    color: #ffffff;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   VIDEO CONTENT
+   ============================================================ */
+
+.search-video-content {
+    padding: 13px;
+}
+
+
+/* ============================================================
+   AUTHOR
+   ============================================================ */
+
+.search-video-author {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: fit-content;
+
+    max-width: 100%;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.search-video-author:hover {
+    color: #7380ff;
+}
+
+
+.search-video-avatar {
+    width: 30px;
+
+    height: 30px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    background: #303038;
+}
+
+
+.avatar-empty {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #6257ff;
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+
+.search-video-description {
+    margin:
+        10px
+        0
+        0;
+
+    color: #b4b8c3;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 3;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   HASHTAGS
+   ============================================================ */
+
+.search-video-hashtags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 9px;
+}
+
+
+.search-video-hashtags span {
+    color: #7380ff;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   EMPTY
+   ============================================================ */
+
+.search-empty,
+.search-start {
+    width: 100%;
+
+    max-width: 700px;
+
+    margin:
+        80px auto;
+
+    text-align: center;
+
+    color: #858b9b;
+}
+
+
+.search-empty-icon,
+.search-start-icon {
+    font-size: 45px;
+
+    margin-bottom: 15px;
+}
+
+
+.search-empty h3,
+.search-start h2 {
+    margin:
+        0
+        0
+        10px;
+
+    color: #ffffff;
+
+    font-size: 24px;
+}
+
+
+.search-empty p,
+.search-start p {
+    margin: 0;
+
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .search-page {
+        padding:
+            30px;
+    }
+
+
+    .search-videos-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(180px, 1fr)
+            );
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .search-page {
+        padding:
+            25px
+            18px;
+    }
+
+
+    .search-page-title {
+        font-size: 28px;
+    }
+
+
+    .search-form {
+        flex-direction: column;
+    }
+
+
+    .search-submit {
+        width: 100%;
+    }
+
+
+    .people-arrow-left {
+        left: -5px;
+    }
+
+
+    .people-arrow-right {
+        right: -5px;
+    }
+
+
+    .search-videos-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .search-video-media-link {
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        color: inherit;
+    }   
+}

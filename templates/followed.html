@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Minto | Followed Creators{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/followed.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex min-h-screen">
+<!-- ================= MAIN ================= -->
+
+
+
+        <div class="max-w-5xl mx-auto px-6 py-8">
+
+
+            <!-- ================= HEADER ================= -->
+
+            <div
+                class="flex items-center justify-between
+                       border-b border-white/5
+                       pb-5
+                       mb-8"
+            >
+
+                <div>
+
+                    <h2
+                        class="text-2xl font-bold text-white
+                               flex items-center gap-3"
+                    >
+
+                        <span>👥</span>
+
+                        Followed Creators
+
+                    </h2>
+
+
+                    <p class="text-xs text-gray-400 mt-1">
+
+                        Accounts you are currently following on Minto
+
+                    </p>
+
+                </div>
+
+
+                <span
+                    class="bg-indigo-600/10
+                           border border-indigo-500/20
+                           text-indigo-400
+                           text-xs font-semibold
+                           px-3 py-1.5
+                           rounded-xl"
+                >
+
+                    {{ followed_users.count }} Accounts
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ================= CREATORS ================= -->
+
+            <div
+                class="grid
+                       grid-cols-1
+                       sm:grid-cols-2
+                       md:grid-cols-3
+                       gap-5"
+            >
+
+
+                {% for creator in followed_users %}
+
+
+                <!-- ================= CREATOR CARD ================= -->
+
+                <div
+                    class="bg-[#18181c]
+                           border border-white/5
+                           rounded-2xl
+                           p-5
+                           hover:border-indigo-500/40
+                           transition
+                           flex items-center
+                           gap-4
+                           group
+                           shadow-md"
+                >
+
+
+                    <!-- ================= AVATAR ================= -->
+
+                    <a
+                        href="{% url 'profile' creator.username %}"
+                        class="shrink-0"
+                    >
+
+                        <div
+                            class="w-14 h-14
+                                   rounded-full
+                                   bg-indigo-600
+                                   border-2 border-indigo-500
+                                   flex items-center
+                                   justify-center
+                                   text-lg
+                                   font-bold
+                                   text-white
+                                   overflow-hidden
+                                   shadow-md
+                                   group-hover:scale-105
+                                   transition"
+                        >
+
+
+                            {% if creator.avatar %}
+
+                                <img
+                                    src="{{ creator.avatar.url }}"
+                                    alt="@{{ creator.username }}"
+                                    class="w-full h-full object-cover"
+                                >
+
+                            {% else %}
+
+                                {{ creator.username|slice:":1"|upper }}
+
+                            {% endif %}
+
+
+                        </div>
+
+                    </a>
+
+
+
+                    <!-- ================= USER INFO ================= -->
+
+                    <div class="flex-1 min-w-0">
+
+
+                        <!-- Username -->
+
+                        <a
+                            href="{% url 'profile' creator.username %}"
+                            class="font-bold
+                                   text-white
+                                   text-sm
+                                   hover:underline
+                                   truncate
+                                   block"
+                        >
+
+                            @{{ creator.username }}
+
+                        </a>
+
+
+
+                        <!-- Description -->
+
+                        <p
+                            class="text-xs
+                                   text-gray-400
+                                   truncate
+                                   mt-0.5"
+                        >
+
+                            {% if creator.description %}
+
+                                {{ creator.description }}
+
+                            {% else %}
+
+                                No description
+
+                            {% endif %}
+
+                        </p>
+
+
+
+                        <!-- ================= STATS ================= -->
+
+                        <div
+                            class="flex items-center
+                                   gap-3
+                                   mt-2
+                                   text-[11px]
+                                   text-gray-500"
+                        >
+
+                            <!-- Videos -->
+
+                            <span>
+
+                                📹 {{ creator.videos.count }} videos
+
+                            </span>
+
+
+                            <span>•</span>
+
+
+                            <!-- Followers -->
+
+                            <span>
+
+                                👥 {{ creator.following.count }} followers
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= UNFOLLOW ================= -->
+
+                    <form
+                        method="POST"
+                        action="{% url 'unfollow_from_followed' creator.username %}"
+                        class="shrink-0"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="bg-[#23232a]
+                                   hover:bg-red-500/20
+                                   hover:text-red-400
+                                   text-gray-300
+                                   text-xs
+                                   font-semibold
+                                   px-3
+                                   py-2
+                                   rounded-xl
+                                   border border-white/5
+                                   transition"
+                        >
+
+                            Following
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+
+                {% empty %}
+
+
+                <!-- ================= NOTHING FOLLOWED ================= -->
+
+                <div class="col-span-full">
+
+                    <div
+                        class="bg-[#18181c]
+                               border border-white/5
+                               rounded-2xl
+                               p-12
+                               text-center"
+                    >
+
+                        <div class="text-5xl mb-4">
+
+                            👥
+
+                        </div>
+
+
+                        <h3
+                            class="text-xl
+                                   font-semibold
+                                   text-white
+                                   mb-2"
+                        >
+
+                            You aren't following anyone yet
+
+                        </h3>
+
+
+                        <p
+                            class="text-gray-500
+                                   text-sm
+                                   mb-6"
+                        >
+
+                            Find creators you like and follow them.
+
+                        </p>
+
+
+                        <a
+                            href="{% url 'feed' %}"
+                            class="inline-block
+                                   bg-indigo-600
+                                   hover:bg-indigo-500
+                                   text-white
+                                   font-semibold
+                                   px-5
+                                   py-2.5
+                                   rounded-xl
+                                   transition"
+                        >
+
+                            Browse videos
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/followed.js' %}"></script>
+{% endblock %}

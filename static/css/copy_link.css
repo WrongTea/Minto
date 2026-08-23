@@ -1,0 +1,118 @@
+/* =========================
+   COPY LINK NOTIFICATION
+   ========================= */
+
+.copy-link-notification {
+    position: fixed;
+
+    right: 30px;
+    bottom: 30px;
+
+    width: 360px;
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 16px 20px;
+
+    background: #17171b;
+
+    border: 1px solid #2c2c33;
+    border-radius: 17px;
+
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(98, 87, 255, 0.08);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(20px) scale(0.97);
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        transform 0.25s ease;
+
+    z-index: 9999;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   SHOW
+   ========================= */
+
+.copy-link-notification.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================
+   ICON
+   ========================= */
+
+.copy-link-icon {
+    width: 43px;
+    height: 43px;
+
+    min-width: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #211f3b;
+
+    color: #7380ff;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   CONTENT
+   ========================= */
+
+.copy-link-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+}
+
+
+/* =========================
+   TITLE
+   ========================= */
+
+.copy-link-title {
+    color: #ffffff;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   MESSAGE
+   ========================= */
+
+.copy-link-message {
+    color: #9ca8bd;
+
+    font-size: 14px;
+    line-height: 1.4;
+}

@@ -1,0 +1,1076 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ profile_user.username }} | Minto{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/warning_delete_video.css' %}">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="flex min-h-screen">
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="flex-1 min-w-0">
+
+        <div class="max-w-5xl mx-auto px-6 py-10">
+
+            <!-- ================= PROFILE ================= -->
+
+            <div
+                class="bg-[#18181c]
+                       border border-white/5
+                       rounded-3xl
+                       p-8
+                       shadow-xl
+                       flex flex-col md:flex-row
+                       items-center md:items-start
+                       gap-8"
+            >
+
+                <!-- Avatar -->
+
+                <div class="shrink-0">
+
+                    {% if profile_user.avatar %}
+
+                        <img
+                            src="{{ profile_user.avatar.url }}"
+                            alt="{{ profile_user.username }}"
+                            class="w-32 h-32 rounded-full
+                                   object-cover
+                                   border-2 border-indigo-500
+                                   shadow-lg"
+                        >
+
+                    {% else %}
+
+                        <div
+                            class="w-32 h-32 rounded-full
+                                   bg-indigo-600
+                                   flex items-center justify-center
+                                   text-4xl font-bold"
+                        >
+                            {{ profile_user.username|slice:":1"|upper }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Profile information -->
+
+                <div class="flex-1 w-full">
+
+                    <div
+                        class="flex flex-col md:flex-row
+                               md:items-center
+                               justify-between
+                               gap-4"
+                    >
+
+                        <div>
+
+                            <!-- USERNAME + EDIT -->
+
+                            <div class="flex items-center gap-3">
+
+                                <h1 class="text-3xl font-bold">
+                                    @{{ profile_user.username }}
+                                </h1>
+
+                                {% if request.user == profile_user %}
+
+                                    <a
+                                        href="{% url 'edit_profile' %}"
+                                        title="Edit profile"
+                                        class="profile-edit-button"
+                                    >
+                                        ✎
+                                    </a>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            {% if profile_user.birth_date %}
+
+                                <p class="text-xs text-gray-500 mt-2">
+                                    🎂 Born:
+                                    {{ profile_user.birth_date|date:"M d, Y" }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Follow -->
+
+                        {% if request.user != profile_user %}
+
+                            {% if is_following %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'unfollow' profile_user.username %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="bg-[#222229]
+                                               hover:bg-[#2a2a32]
+                                               text-white
+                                               font-semibold
+                                               px-6 py-2.5
+                                               rounded-xl
+                                               transition"
+                                    >
+                                        Following
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'follow' profile_user.username %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="bg-indigo-600
+                                               hover:bg-indigo-500
+                                               text-white
+                                               font-semibold
+                                               px-6 py-2.5
+                                               rounded-xl
+                                               transition"
+                                    >
+                                        Follow
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Counters -->
+
+                    <div
+                        class="flex gap-8
+                               mt-6
+                               pt-5
+                               border-t border-white/5
+                               text-sm"
+                    >
+
+                        <div>
+
+                            <span class="font-bold text-white">
+                                {{ videos.count }}
+                            </span>
+
+                            <span class="text-gray-400">
+                                Videos
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="font-bold text-white">
+                                {{ profile_user.following.count }}
+                            </span>
+
+                            <span class="text-gray-400">
+                                Followers
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="font-bold text-white">
+                                {{ profile_user.followers.count }}
+                            </span>
+
+                            <span class="text-gray-400">
+                                Following
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    {% if profile_user.description %}
+
+                        <p
+                            class="mt-5 text-sm text-gray-300
+                                   leading-relaxed"
+                        >
+                            {{ profile_user.description }}
+                        </p>
+
+                    {% else %}
+
+                        <p class="mt-5 text-sm text-gray-500">
+                            No description yet.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= VIDEOS ================= -->
+
+            <div class="mt-10">
+
+                <h2 class="text-xl font-bold mb-5">
+                    📹 Videos
+                </h2>
+
+
+                <div
+                    class="grid grid-cols-2
+                           sm:grid-cols-3
+                           md:grid-cols-4
+                           gap-4"
+                >
+
+                    <!-- ================= CREATE NEW VIDEO ================= -->
+
+                    <a
+                        href="{% url 'create_video' %}"
+                        class="relative
+                               aspect-[9/16]
+                               bg-black
+                               rounded-2xl
+                               overflow-hidden
+                               border border-white/10
+                               hover:border-indigo-500/50
+                               transition
+                               cursor-pointer
+                               flex flex-col
+                               items-center
+                               justify-center
+                               group
+                               shadow-md"
+                    >
+
+                        <span
+                            class="text-5xl
+                                   font-light
+                                   text-white
+                                   leading-none
+                                   group-hover:scale-110
+                                   transition"
+                        >
+                            +
+                        </span>
+
+                        <span
+                            class="mt-3
+                                   text-sm
+                                   text-gray-300
+                                   font-medium"
+                        >
+                            Create new video
+                        </span>
+
+                    </a>
+
+
+                    <!-- ================= EXISTING VIDEOS ================= -->
+
+                    {% for video in videos %}
+
+                        <div
+                            class="relative
+                                   aspect-[9/16]
+                                   bg-[#18181c]
+                                   rounded-2xl
+                                   overflow-hidden
+                                   border border-white/5
+                                   hover:border-indigo-500/50
+                                   transition
+                                   group
+                                   shadow-md"
+                        >
+
+                            <!-- ================= VIDEO ================= -->
+
+                            <button
+                                type="button"
+                                onclick="openProfileVideo(this)"
+                                data-video-url="{{ video.video_file.url }}"
+                                data-page-url="{% url 'video_detail' video.id %}"
+                                data-view-url="{% url 'add_video_view' video.id %}"
+                                data-username="{{ video.author.username }}"
+                                data-avatar="{% if video.author.avatar %}{{ video.author.avatar.url }}{% endif %}"
+                                data-description="{{ video.description|default:'No description'|escape }}"
+                                data-upload-date="{{ video.upload_date|date:'M d, Y' }}"
+                                data-video-id="{{ video.id }}"
+                                data-like-count="{{ video.likes.count }}"
+                                data-comment-count="{{ video.comments.count }}"
+                                data-liked="{% if request.user in video.likes.all %}true{% else %}false{% endif %}"
+                                class="absolute
+                                       inset-0
+                                       w-full
+                                       h-full
+                                       cursor-pointer
+                                       p-0
+                                       text-left"
+                            >
+
+                                {% if video.preview %}
+
+                                    <img
+                                        src="{{ video.preview.url }}"
+                                        alt="{{ video.description }}"
+                                        class="w-full h-full
+                                               object-cover
+                                               group-hover:scale-105
+                                               transition duration-300"
+                                    >
+
+                                {% else %}
+
+                                    <video
+                                        src="{{ video.video_file.url }}"
+                                        class="w-full h-full object-cover"
+                                        muted
+                                        preload="metadata"
+                                    ></video>
+
+                                {% endif %}
+
+
+                                <!-- Gradient -->
+
+                                <div
+                                    class="absolute inset-0
+                                           bg-gradient-to-t
+                                           from-black/90
+                                           via-transparent
+                                           to-transparent
+                                           pointer-events-none"
+                                ></div>
+
+
+                                <!-- DESCRIPTION -->
+
+                                <p
+                                    class="absolute
+                                           bottom-12
+                                           left-3
+                                           right-3
+                                           text-xs
+                                           text-white
+                                           line-clamp-2
+                                           font-medium
+                                           pointer-events-none"
+                                >
+
+                                    {% if video.description %}
+
+                                        {{ video.description }}
+
+                                    {% else %}
+
+                                        No description
+
+                                    {% endif %}
+
+                                </p>
+
+
+                                <!-- VIEWS -->
+
+                                <div
+                                    class="absolute
+                                           bottom-3
+                                           left-3
+                                           flex
+                                           items-center
+                                           gap-1
+                                           text-xs
+                                           text-gray-200
+                                           bg-black/50
+                                           px-2
+                                           py-1
+                                           rounded-lg
+                                           backdrop-blur-sm
+                                           pointer-events-none"
+                                >
+
+                                    <span>👁</span>
+
+                                    <span id="profile-view-count-{{ video.id }}">
+                                        {{ video.views_count }}
+                                    </span>
+
+                                </div>
+
+
+                                <!-- LIKE -->
+
+                                <div
+                                    class="absolute
+                                           bottom-3
+                                           right-3
+                                           flex
+                                           items-center
+                                           gap-1
+                                           text-xs
+                                           text-gray-200
+                                           bg-black/50
+                                           px-2
+                                           py-1
+                                           rounded-lg
+                                           backdrop-blur-sm
+                                           pointer-events-none"
+                                >
+
+                                    <span>❤️</span>
+
+                                    <span>
+                                        {{ video.likes.count }}
+                                    </span>
+
+                                </div>
+
+                            </button>
+
+
+                            <!-- ================= DELETE VIDEO ================= -->
+
+                            {% if request.user == profile_user %}
+
+                                <button
+                                    type="button"
+                                    class="delete-video-button
+                                           absolute
+                                           top-3
+                                           right-3
+                                           z-30
+                                           w-10
+                                           h-10
+                                           rounded-lg
+                                           bg-black
+                                           border border-white/10
+                                           flex
+                                           items-center
+                                           justify-center
+                                           text-purple-500
+                                           hover:text-purple-400
+                                           hover:bg-[#111116]
+                                           hover:border-purple-500/50
+                                           transition
+                                           shadow-lg"
+                                    data-video-id="{{ video.id }}"
+                                    onclick="deleteProfileVideo(event, this)"
+                                    title="Delete video"
+                                >
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        class="w-5 h-5"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M6 7h12"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M7 7v12a1 1 0 001 1h8a1 1 0 001-1V7"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M10 11v6"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M14 11v6"
+                                        />
+
+                                    </svg>
+
+                                </button>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- ======================================================
+     PROFILE VIDEO MODAL
+     ====================================================== -->
+
+<div
+    id="profile-video-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center
+           bg-black/90 p-4"
+>
+
+    <article
+        class="relative w-full max-w-[520px]
+               aspect-[9/16]
+               bg-[#101014]
+               border border-white/10
+               rounded-3xl
+               overflow-hidden
+               shadow-2xl"
+    >
+
+        <div class="relative w-full h-full bg-black">
+
+            <video
+                id="profile-player-video"
+                class="video-player w-full h-full object-contain"
+                playsinline
+                preload="auto"
+                onclick="toggleProfilePlayer()"
+            ></video>
+
+
+            <!-- PLAY -->
+
+            <div
+                id="profile-center-play"
+                class="absolute inset-0
+                       flex items-center justify-center
+                       pointer-events-none
+                       opacity-100
+                       transition-opacity duration-150"
+            >
+
+                <div
+                    class="w-20 h-20 rounded-full
+                           bg-black/55
+                           backdrop-blur-sm
+                           flex items-center justify-center
+                           text-white shadow-xl"
+                >
+
+                    <span
+                        id="profile-center-icon"
+                        class="text-4xl leading-none ml-1"
+                    >
+                        ▶
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CLOSE -->
+
+            <button
+                type="button"
+                onclick="closeProfileVideo()"
+                class="absolute top-4 left-4 z-40
+                       w-10 h-10 rounded-full
+                       bg-black/60
+                       border border-white/10
+                       flex items-center justify-center
+                       text-xl
+                       hover:bg-white/10 transition"
+            >
+                ←
+            </button>
+
+
+            <!-- ACTIONS -->
+
+            <div
+                class="absolute
+                       right-4
+                       bottom-28
+                       flex flex-col
+                       items-center gap-4
+                       z-10"
+            >
+
+                <!-- Avatar -->
+
+                <button
+                    type="button"
+                    onclick="closeProfileVideo()"
+                    class="block"
+                >
+
+                    <img
+                        id="profile-player-avatar"
+                        src=""
+                        alt=""
+                        class="hidden w-12 h-12 rounded-full
+                               object-cover
+                               border-2 border-indigo-500
+                               shadow-lg"
+                    >
+
+                    <div
+                        id="profile-player-avatar-placeholder"
+                        class="w-12 h-12 rounded-full
+                               bg-indigo-600
+                               border-2 border-indigo-400
+                               flex items-center justify-center
+                               font-bold text-lg"
+                    >
+                        ?
+                    </div>
+
+                </button>
+
+
+                <!-- LIKE -->
+
+                <button
+                    id="profile-like-button"
+                    type="button"
+                    onclick="toggleProfileLike()"
+                    class="w-12 h-12 rounded-full
+                           bg-[#202024]
+                           border border-white/10
+                           flex items-center justify-center
+                           text-xl
+                           hover:bg-red-500/20
+                           transition"
+                >
+                    ❤️
+                </button>
+
+                <span
+                    id="profile-like-count"
+                    class="text-xs text-gray-300 -mt-3"
+                >
+                    0
+                </span>
+
+
+                <!-- COMMENT -->
+
+                <button
+                    type="button"
+                    onclick="openProfileComments()"
+                    class="w-12 h-12 rounded-full
+                           bg-[#202024]
+                           border border-white/10
+                           flex items-center justify-center
+                           text-xl
+                           hover:bg-white/10
+                           transition"
+                >
+                    💬
+                </button>
+
+                <span
+                    id="profile-comment-count"
+                    class="text-xs text-gray-300 -mt-3"
+                >
+                    0
+                </span>
+
+
+                <!-- SHARE -->
+
+                <button
+                    type="button"
+                    onclick="copyProfileVideoLink()"
+                    class="w-12 h-12 rounded-full
+                           bg-[#202024]
+                           border border-white/10
+                           flex items-center justify-center
+                           text-xl
+                           hover:bg-white/10
+                           transition"
+                >
+                    🔗
+                </button>
+
+                <span class="text-xs text-gray-300 -mt-3">
+                    Share
+                </span>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div
+                class="absolute
+                       left-0 right-0 bottom-16
+                       p-5 pt-20
+                       bg-gradient-to-t
+                       from-black
+                       via-black/80
+                       to-transparent
+                       pointer-events-none"
+            >
+
+                <div class="flex items-center gap-2">
+
+                    <button
+                        id="profile-player-username"
+                        type="button"
+                        onclick="closeProfileVideo()"
+                        class="font-bold text-base
+                               hover:underline
+                               pointer-events-auto"
+                    >
+                        @user
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="profile-player-description"
+                    class="text-sm text-gray-200
+                           leading-relaxed mb-3
+                           max-w-[80%]"
+                >
+                    No description
+                </p>
+
+
+                <div
+                    class="flex flex-col gap-1
+                           text-xs text-gray-400"
+                >
+
+                    <span id="profile-player-date">
+                        🕐 —
+                    </span>
+
+                    <span id="profile-player-views">
+                        👁 0 views
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div
+                class="absolute
+                       left-0 right-0 bottom-0
+                       px-3 pb-2 pt-10
+                       bg-gradient-to-t
+                       from-black/80
+                       via-black/20
+                       to-transparent
+                       z-20"
+            >
+
+                <div class="flex items-center gap-2">
+
+                    <span
+                        id="profile-player-time"
+                        class="text-[11px]
+                               text-white/90
+                               min-w-[82px]
+                               text-center"
+                    >
+                        0:00 / 0:00
+                    </span>
+
+
+                    <button
+                        type="button"
+                        onclick="toggleProfileFullscreen()"
+                        class="control-button
+                               text-base ml-auto"
+                    >
+                        ⛶
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div
+                id="profile-progress-hitbox"
+                class="progress-hitbox"
+                onpointerdown="startProfileSeek(event)"
+                onpointermove="dragProfileSeek(event)"
+                onpointerup="stopProfileSeek(event)"
+                onpointercancel="stopProfileSeek(event)"
+                onpointerleave="stopProfileSeek(event)"
+            >
+
+                <div class="progress-track">
+
+                    <div
+                        id="profile-progress"
+                        class="progress-fill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</div>
+
+
+
+<!-- ======================================================
+     COMMENTS
+     ====================================================== -->
+
+<div
+    id="profile-comments-overlay"
+    class="comments-closed fixed inset-0 z-[70]"
+>
+
+    <div
+        class="absolute inset-0 bg-black/45"
+        onclick="closeProfileComments()"
+    ></div>
+
+
+    <div
+        id="profile-comments-panel"
+        class="absolute
+               right-0 top-0
+               h-full
+               w-full
+               sm:w-[430px]
+               bg-[#18181c]
+               border-l border-white/10
+               shadow-2xl
+               flex flex-col"
+    >
+
+        <!-- HEADER -->
+
+        <div
+            class="shrink-0
+                   flex items-center justify-between
+                   px-5 py-4
+                   border-b border-white/10"
+        >
+
+            <div>
+
+                <h2 class="font-bold text-lg">
+                    Comments
+                </h2>
+
+                <p
+                    id="profile-comments-title-count"
+                    class="text-xs text-gray-500"
+                >
+                    0 comments
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                onclick="closeProfileComments()"
+                class="w-9 h-9 rounded-full
+                       bg-white/5
+                       hover:bg-white/10
+                       flex items-center justify-center
+                       text-lg"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- COMMENT LIST -->
+
+        <div
+            id="profile-comments-list"
+            class="comment-scroll flex-1 p-5 space-y-5"
+        >
+
+            <div class="text-center text-gray-500 py-10">
+                Loading comments...
+            </div>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div
+            class="shrink-0
+                   p-4
+                   border-t border-white/10
+                   bg-[#151519]"
+        >
+
+            <form
+                id="profile-comment-form"
+                class="flex items-center gap-2"
+                onsubmit="submitProfileComment(event)"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    id="profile-comment-input"
+                    type="text"
+                    maxlength="200"
+                    placeholder="Add a comment..."
+                    class="flex-1
+                           bg-[#222229]
+                           border border-white/10
+                           rounded-full
+                           px-4 py-3
+                           text-sm
+                           text-white
+                           outline-none
+                           focus:border-indigo-500"
+                >
+
+
+                <button
+                    type="submit"
+                    class="shrink-0
+                           w-11 h-11
+                           rounded-full
+                           bg-indigo-600
+                           hover:bg-indigo-500
+                           flex items-center justify-center
+                           transition"
+                >
+                    ➤
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     DELETE VIDEO WARNING
+     ====================================================== -->
+
+<div
+    id="delete-video-modal"
+    class="delete-video-modal"
+>
+
+    <div class="delete-video-modal-box">
+
+        <h3 class="delete-video-modal-title">
+            Delete video?
+        </h3>
+
+        <p class="delete-video-modal-message">
+            Are you sure you want to delete this video?
+        </p>
+
+        <div class="delete-video-modal-buttons">
+
+            <button
+                type="button"
+                id="delete-video-modal-cancel"
+                class="delete-video-modal-button delete-video-modal-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="delete-video-modal-confirm"
+                class="delete-video-modal-button delete-video-modal-confirm"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/warning_delete_video.js' %}"></script>
+<script src="{% static 'js/profile.js' %}?v=5"></script>
+
+{% endblock %}

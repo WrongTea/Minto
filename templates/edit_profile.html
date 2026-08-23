@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Edit Profile | Minto{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="edit-profile-page">
+
+    <div class="edit-profile-container">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="edit-profile-header">
+            <div>
+                <h1>Edit Profile</h1>
+                <p>Change your profile information</p>
+            </div>
+        </div>
+
+
+        <!-- ================= PROFILE CARD ================= -->
+
+        <div class="edit-profile-card">
+
+            {% if error %}
+                <div class="edit-profile-error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+
+            <!-- ================= FORM ================= -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- ================= AVATAR ================= -->
+
+                <div class="edit-profile-avatar-section">
+
+                    <div class="edit-profile-avatar">
+
+                        {% if request.user.avatar %}
+                            <img
+                                id="avatar-preview"
+                                src="{{ request.user.avatar.url }}"
+                                alt="Profile picture"
+                            >
+                        {% else %}
+                            <div
+                                class="edit-profile-avatar-placeholder"
+                                id="avatar-placeholder"
+                            >
+                                {{ request.user.username|first|upper }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="edit-profile-avatar-info">
+
+                        <h2>Profile picture</h2>
+
+                        <p>
+                            Choose a new profile picture
+                        </p>
+
+                        <label
+                            for="avatar"
+                            class="edit-profile-avatar-button"
+                        >
+                            Change avatar
+                        </label>
+
+                        <input
+                            id="avatar"
+                            name="avatar"
+                            type="file"
+                            accept="image/*"
+                            hidden
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= DIVIDER ================= -->
+
+                <div class="edit-profile-divider"></div>
+
+
+                <!-- ================= USERNAME ================= -->
+
+                <div class="edit-profile-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        value="{{ request.user.username }}"
+                        placeholder="Enter your username"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================= DESCRIPTION ================= -->
+
+                <div class="edit-profile-field">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Tell something about yourself..."
+                        maxlength="200"
+                    >{{ request.user.description }}</textarea>
+
+                    <span class="edit-profile-hint">
+                        Tell people something about yourself.
+                    </span>
+
+                </div>
+
+
+                <!-- ================= BIRTH DATE ================= -->
+
+                <div class="edit-profile-field">
+
+                    <label for="birth-date">
+                        Birth date
+                    </label>
+
+                    <input
+                        id="birth-date"
+                        name="birth_date"
+                        type="text"
+                        value="{% if request.user.birth_date %}{{ request.user.birth_date|date:'d.m.Y' }}{% endif %}"
+                        placeholder="DD.MM.YYYY"
+                        maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="bday"
+                    >
+
+                </div>
+
+
+                <!-- ================= ACTIONS ================= -->
+
+                <div class="edit-profile-actions">
+
+                    <button
+                        type="button"
+                        class="edit-profile-cancel"
+                        onclick="window.location.href='{% url 'profile' request.user.username %}'"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="edit-profile-save"
+                    >
+                        Save changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/edit_profile.js' %}"></script>
+
+{% endblock %}

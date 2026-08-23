@@ -1,0 +1,104 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #0f0f12;
+    color: white;
+}
+
+.video-player {
+    background: #050507;
+}
+
+.progress-hitbox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 18px;
+    cursor: pointer;
+    z-index: 30;
+    display: flex;
+    align-items: flex-end;
+    touch-action: none;
+}
+
+.progress-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    transition: height 0.15s ease;
+}
+
+.progress-hitbox:hover .progress-track {
+    height: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: white;
+}
+
+.control-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 9999px;
+    background: rgba(20, 20, 24, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s ease;
+}
+
+.control-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* =========================
+   TIKTOK-STYLE COMMENTS PANEL
+   ========================= */
+
+.comments-backdrop {
+    background: rgba(0, 0, 0, 0.58);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.comments-sheet {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(430px, 92vw);
+    height: 100%;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.comments-sheet.open {
+    transform: translateX(0);
+}
+
+.comments-list {
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.comment-avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+}
+
+@media (max-width: 640px) {
+    .comments-sheet {
+        width: 100vw;
+    }
+
+    
+}

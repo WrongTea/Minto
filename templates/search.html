@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Search — Minto
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/search.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="search-page">
+
+
+    <!-- =====================================================
+         SEARCH HEADER
+         ===================================================== -->
+
+    <div class="search-page-header">
+
+        <h1 class="search-page-title">
+            Search
+        </h1>
+
+
+        <form
+            class="search-form"
+            method="GET"
+            action="{% url 'search' %}"
+        >
+
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                class="search-page-input"
+                placeholder="Search videos or creators..."
+                autocomplete="off"
+                autofocus
+            >
+
+            <button
+                type="submit"
+                class="search-submit"
+            >
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if query %}
+
+
+        <!-- =================================================
+             PEOPLE
+             ================================================= -->
+
+        {% if users %}
+
+        <section class="search-people-section">
+
+            <h2 class="search-section-title">
+                People
+            </h2>
+
+
+            <div class="people-carousel">
+
+
+                <!-- LEFT ARROW -->
+
+                <button
+                    type="button"
+                    id="people-left"
+                    class="people-arrow people-arrow-left hidden"
+                    aria-label="Previous people"
+                >
+                    ‹
+                </button>
+
+
+                <!-- PEOPLE LIST -->
+
+                <div
+                    id="people-list"
+                    class="people-list"
+                >
+
+                    {% for user in users %}
+
+                    <a
+                        href="{% url 'profile' user.username %}"
+                        class="person-card"
+                    >
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt="{{ user.username }}"
+                                class="person-avatar"
+                            >
+
+                        {% else %}
+
+                            <div class="person-avatar person-avatar-empty">
+                                {{ user.username|first|upper }}
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="person-name">
+
+                            {% if user.first_name or user.last_name %}
+
+                                {{ user.first_name }}
+                                {{ user.last_name }}
+
+                            {% else %}
+
+                                @{{ user.username }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="person-username">
+                            @{{ user.username }}
+                        </div>
+
+                    </a>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- RIGHT ARROW -->
+
+                <button
+                    type="button"
+                    id="people-right"
+                    class="people-arrow people-arrow-right hidden"
+                    aria-label="Next people"
+                >
+                    ›
+                </button>
+
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             VIDEOS
+             ================================================= -->
+
+        <section class="search-videos-section">
+
+            <h2 class="search-section-title">
+                Videos
+            </h2>
+
+
+            {% if videos %}
+
+            <div class="search-videos-grid">
+
+                {% for video in videos %}
+
+                <article class="search-video-card">
+
+
+                    <!-- VIDEO -->
+
+                    <a
+                        href="{% url 'video_detail' video.id %}"
+                        class="search-video-media-link"
+                    >
+
+                        <div class="search-video-media">
+
+                            {% if video.preview %}
+
+                                <img
+                                    src="{{ video.preview.url }}"
+                                    alt="{{ video.description }}"
+                                    class="search-video-preview"
+                                >
+
+                            {% else %}
+
+                                <video
+                                    class="search-video-preview"
+                                    src="{{ video.video_file.url }}"
+                                    muted
+                                    preload="metadata"
+                                ></video>
+
+                            {% endif %}
+
+
+                            <div class="search-video-overlay">
+
+                                <span>
+                                    {{ video.views_count }} views
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- VIDEO INFO -->
+
+                    <div class="search-video-content">
+
+
+                        <!-- AUTHOR -->
+
+                        <a
+                            href="{% url 'profile' video.author.username %}"
+                            class="search-video-author"
+                        >
+
+                            {% if video.author.avatar %}
+
+                                <img
+                                    src="{{ video.author.avatar.url }}"
+                                    alt="{{ video.author.username }}"
+                                    class="search-video-avatar"
+                                >
+
+                            {% else %}
+
+                                <div class="search-video-avatar avatar-empty">
+                                    {{ video.author.username|first|upper }}
+                                </div>
+
+                            {% endif %}
+
+
+                            <span>
+                                @{{ video.author.username }}
+                            </span>
+
+                        </a>
+
+
+                        <!-- DESCRIPTION -->
+
+                        {% if video.description %}
+
+                        <p class="search-video-description">
+                            {{ video.description }}
+                        </p>
+
+                        {% endif %}
+
+
+                        <!-- HASHTAGS -->
+
+                        {% if video.hashtags.all %}
+
+                        <div class="search-video-hashtags">
+
+                            {% for hashtag in video.hashtags.all %}
+
+                                <span>
+                                    #{{ hashtag.name }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="search-empty">
+
+                <div class="search-empty-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    No videos found
+                </h3>
+
+                <p>
+                    Try searching for something else.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             EMPTY SEARCH
+             ================================================= -->
+
+        <div class="search-start">
+
+            <div class="search-start-icon">
+                🔍
+            </div>
+
+            <h2>
+                Find something on Minto
+            </h2>
+
+            <p>
+                Search for creators, videos or hashtags.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'js/search.js' %}"
+></script>
+
+{% endblock %}

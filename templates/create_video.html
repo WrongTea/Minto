@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/create_video.css' %}">
+
+<div class="create-video-page">
+
+```
+<div class="create-video-container">
+
+    <div class="create-video-header">
+        <h1>Create video</h1>
+        <p>Upload your video and share it with the community.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="create-video-form">
+
+        {% csrf_token %}
+
+        <!-- VIDEO -->
+        <div class="form-group">
+
+            <label class="field-label">
+                Video
+            </label>
+
+            <label for="id_video_file" class="video-upload">
+
+                <div class="upload-icon">
+                    ↑
+                </div>
+
+                <div class="upload-title" id="upload-title">
+                    Choose a video
+                </div>
+
+                <div class="upload-subtitle" id="upload-subtitle">
+                    MP4, MOV, AVI or WEBM
+                </div>
+
+            </label>
+
+            <input
+                type="file"
+                name="video_file"
+                id="id_video_file"
+                accept=".mp4,.mov,.avi,.webm"
+                required
+            >
+
+        </div>
+
+
+        <!-- PREVIEW -->
+        <div class="form-group">
+
+            <label for="id_preview" class="field-label">
+                Preview
+            </label>
+
+            <input
+                type="file"
+                name="preview"
+                id="id_preview"
+                accept="image/*"
+                class="file-input"
+            >
+
+            <span class="field-hint">
+                Optional preview image.
+            </span>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+
+            <label for="id_description" class="field-label">
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                id="id_description"
+                maxlength="200"
+                placeholder="Write something about your video..."
+            ></textarea>
+
+            <div class="description-bottom">
+
+                <span>
+                    Maximum 200 characters
+                </span>
+
+                <span id="char-count">
+                    0 / 200
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORY -->
+        <div class="form-group">
+
+            <label for="id_category" class="field-label">
+                Category
+            </label>
+
+            <select
+                name="category"
+                id="id_category"
+            >
+
+                <option value="">
+                    Choose category
+                </option>
+
+                {% for category in categories %}
+
+                    <option value="{{ category.id }}">
+                        {{ category.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- HASHTAGS -->
+        <div class="form-group">
+
+            <label for="id_hashtags" class="field-label">
+                Hashtags
+            </label>
+
+            <input
+                type="text"
+                name="hashtags"
+                id="id_hashtags"
+                placeholder="Write some hashtags for your video..."
+            >
+
+            <span class="field-hint">
+                Write hashtags separated by spaces.
+            </span>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+        <div class="form-buttons">
+
+            <a href="/" class="cancel-button">
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="create-button"
+            >
+                Upload video
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+<script src="{% static 'js/create_video.js' %}"></script>
+
+{% endblock %}

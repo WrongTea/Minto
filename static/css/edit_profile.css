@@ -1,0 +1,433 @@
+
+/* =========================================================
+   EDIT PROFILE
+   ========================================================= */
+
+.edit-profile-page {
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.edit-profile-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.edit-profile-header {
+    margin-bottom: 24px;
+}
+
+.edit-profile-header h1 {
+    margin: 0;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.edit-profile-header p {
+    margin: 8px 0 0;
+    color: #8f8f9b;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.edit-profile-card {
+    background: #18181c;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   AVATAR SECTION
+   ========================================================= */
+
+.edit-profile-avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.edit-profile-avatar {
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+.edit-profile-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 50%;
+}
+
+.edit-profile-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    background: #4f46e5;
+
+    border: 2px solid #6366f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 40px;
+    font-weight: 700;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   AVATAR INFO
+   ========================================================= */
+
+.edit-profile-avatar-info h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.edit-profile-avatar-info p {
+    margin: 6px 0 14px;
+
+    color: #858590;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CHANGE AVATAR BUTTON
+   ========================================================= */
+
+.edit-profile-avatar-button {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: #222229;
+
+    color: white;
+
+    padding: 9px 16px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.edit-profile-avatar-button:hover {
+    background: #2a2a32;
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.edit-profile-divider {
+    width: 100%;
+    height: 1px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    margin: 32px 0;
+}
+
+
+/* =========================================================
+   FORM FIELD
+   ========================================================= */
+
+.edit-profile-field {
+    margin-bottom: 24px;
+}
+
+.edit-profile-field label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #f1f1f3;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.edit-profile-field input,
+.edit-profile-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: #111116;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 12px;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.15s ease;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.edit-profile-field input {
+    height: 48px;
+
+    padding: 0 15px;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.edit-profile-field textarea {
+    min-height: 120px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.edit-profile-field input::placeholder,
+.edit-profile-field textarea::placeholder {
+    color: #5f5f69;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.edit-profile-field input:focus,
+.edit-profile-field textarea:focus {
+    border-color: #6366f1;
+
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.edit-profile-hint {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #666672;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.edit-profile-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 32px;
+
+    padding-top: 24px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   CANCEL
+   ========================================================= */
+
+.edit-profile-cancel {
+    height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 11px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    background: #222229;
+
+    color: #d0d0d5;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.edit-profile-cancel:hover {
+    background: #2a2a32;
+    color: white;
+}
+
+
+/* =========================================================
+   SAVE
+   ========================================================= */
+
+.edit-profile-save {
+    height: 44px;
+
+    padding: 0 22px;
+
+    border-radius: 11px;
+
+    border: none;
+
+    background: #4f46e5;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.edit-profile-save:hover {
+    background: #6366f1;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .edit-profile-page {
+        padding: 24px 16px 40px;
+    }
+
+    .edit-profile-card {
+        padding: 22px;
+        border-radius: 20px;
+    }
+
+    .edit-profile-avatar-section {
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .edit-profile-avatar {
+        width: 88px;
+        height: 88px;
+    }
+
+    .edit-profile-avatar-placeholder {
+        font-size: 32px;
+    }
+
+    .edit-profile-header h1 {
+        font-size: 26px;
+    }
+
+    .edit-profile-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .edit-profile-cancel,
+    .edit-profile-save {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   DATE INPUT CALENDAR ICON
+   ========================================================= */
+
+#birth-date::-webkit-calendar-picker-indicator {
+    filter: invert(42%) sepia(95%) saturate(3000%) hue-rotate(225deg) brightness(100%) contrast(100%);
+    cursor: pointer;
+}

@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Report - Minto{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/report.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="report-page">
+
+    <div class="report-card">
+
+        <!-- LOGO -->
+        <div class="report-logo">
+            Minto
+        </div>
+
+
+        <!-- TITLE -->
+        <h1 class="report-title">
+            Report a Violation
+        </h1>
+
+        <p class="report-subtitle">
+            Help us keep Minto safe and enjoyable for everyone.
+        </p>
+
+
+        <!-- SUCCESS MESSAGE -->
+        {% if report_sent %}
+
+            <div class="report-success">
+
+                <strong>
+                    Report submitted.
+                </strong>
+
+                <p>
+                    Thank you for helping keep Minto safe.
+                    Our team will review your report.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- RULES -->
+        <div class="report-rules">
+
+            <h2>
+                Before you submit a report
+            </h2>
+
+            <p>
+                Please make sure that the content you are reporting
+                actually violates Minto's community rules.
+            </p>
+
+            <ul>
+
+                <li>
+                    Do not submit false or misleading reports.
+                </li>
+
+                <li>
+                    Do not report content simply because you dislike it.
+                </li>
+
+                <li>
+                    Reports should be related to a possible violation
+                    of our community rules.
+                </li>
+
+                <li>
+                    Do not use reports to harass or target other users.
+                </li>
+
+                <li>
+                    Provide as much useful information as possible.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- REPORT INFORMATION -->
+        <div class="report-rules">
+
+            <h2>
+                What should you include in your report?
+            </h2>
+
+            <p>
+                Please provide enough information so our moderation team
+                can clearly understand the situation and review the report.
+            </p>
+
+            <ul>
+
+                <li>
+                    Tell us what happened and clearly describe the problem.
+                </li>
+
+                <li>
+                    Provide the username of the person you are reporting.
+                </li>
+
+                <li>
+                    Include a direct link to the reported video, profile,
+                    or comment whenever possible.
+                </li>
+
+                <li>
+                    Select the reason that best describes the violation.
+                </li>
+
+                <li>
+                    If possible, attach a screenshot or other evidence
+                    that can help us review the situation.
+                </li>
+
+                <li>
+                    Do not include false information or report someone
+                    simply because you dislike their content.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- REPORT FORM -->
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="report-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- REPORT TYPE -->
+            <div class="report-field">
+
+                <label for="report-type">
+                    What are you reporting?
+                </label>
+
+                <select
+                    name="report_type"
+                    id="report-type"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select what you are reporting
+                    </option>
+
+                    <option value="video">
+                        Video
+                    </option>
+
+                    <option value="profile">
+                        Profile
+                    </option>
+
+                    <option value="comment">
+                        Comment
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- REASON -->
+            <div class="report-field">
+
+                <label for="report-reason">
+                    Reason
+                </label>
+
+                <select
+                    name="reason"
+                    id="report-reason"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select a reason
+                    </option>
+
+                    <option value="harassment">
+                        Harassment or bullying
+                    </option>
+
+                    <option value="hate">
+                        Hate speech
+                    </option>
+
+                    <option value="violence">
+                        Violence or dangerous content
+                    </option>
+
+                    <option value="sexual">
+                        Sexual or inappropriate content
+                    </option>
+
+                    <option value="spam">
+                        Spam or misleading content
+                    </option>
+
+                    <option value="impersonation">
+                        Impersonation
+                    </option>
+
+                    <option value="copyright">
+                        Copyright violation
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <div class="report-field">
+
+                <label for="report-message">
+                    Tell us what happened
+                </label>
+
+                <textarea
+                    name="message"
+                    id="report-message"
+                    maxlength="1000"
+                    placeholder="Describe the violation and include the link if possible..."
+                    required
+                ></textarea>
+
+                <div class="report-hint">
+                    Maximum 1000 characters. Please include a link
+                    to the reported content if possible.
+                </div>
+
+            </div>
+
+
+            <!-- FILE -->
+            <div class="report-field">
+
+                <label for="report-file">
+
+                    Attach a file
+
+                    <span>
+                        (optional)
+                    </span>
+
+                </label>
+
+                <input
+                    type="file"
+                    name="attachment"
+                    id="report-file"
+                    accept="image/*,.pdf,.txt"
+                >
+
+                <div class="report-hint">
+                    You can attach a screenshot or other useful evidence.
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+            <button
+                type="submit"
+                class="report-submit"
+            >
+                Submit Report
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

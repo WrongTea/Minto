@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}@{{ video.author.username }} | Minto{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/video_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="video-page">
+
+```
+<article class="video-card">
+
+    <!-- VIDEO -->
+
+    <video
+        id="video-detail-player"
+        class="video-player"
+        src="{{ video.video_file.url }}"
+        playsinline
+        preload="auto"
+        onclick="toggleVideoDetailPlayer()"
+    ></video>
+
+
+    <!-- CENTER PLAY -->
+
+    <div
+        id="video-detail-center-play"
+        class="video-center-play"
+    >
+        <div class="video-center-icon">
+            <span id="video-detail-center-icon">▶</span>
+        </div>
+    </div>
+
+
+    <!-- BACK -->
+
+    <button
+        type="button"
+        onclick="history.back()"
+        class="video-back-button"
+    >
+        ←
+    </button>
+
+
+    <!-- RIGHT ACTIONS -->
+
+    <div class="video-actions">
+
+        <!-- AUTHOR AVATAR -->
+
+        <a
+            href="{% url 'profile' video.author.username %}"
+            class="author-avatar-link"
+        >
+
+            {% if video.author.avatar %}
+
+                <img
+                    src="{{ video.author.avatar.url }}"
+                    alt="{{ video.author.username }}"
+                    class="author-avatar"
+                >
+
+            {% else %}
+
+                <div class="author-avatar-placeholder">
+                    {{ video.author.username|slice:":1"|upper }}
+                </div>
+
+            {% endif %}
+
+        </a>
+
+
+        <!-- LIKE -->
+
+        <button
+            id="video-detail-like-button"
+            type="button"
+            onclick="toggleVideoDetailLike()"
+            class="video-action-button"
+        >
+            ❤️
+        </button>
+
+        <span
+            id="video-detail-like-count"
+            class="video-action-count"
+        >
+            {{ video.likes.count }}
+        </span>
+
+
+        <!-- COMMENTS -->
+
+        <button
+            type="button"
+            onclick="openVideoDetailComments()"
+            class="video-action-button"
+        >
+            💬
+        </button>
+
+        <span
+            id="video-detail-comment-count"
+            class="video-action-count"
+        >
+            {{ video.comments.count }}
+        </span>
+
+
+        <!-- SHARE -->
+
+        <button
+            type="button"
+            onclick="copyVideoDetailLink()"
+            class="video-action-button"
+        >
+            🔗
+        </button>
+
+        <span class="video-action-label">
+            Share
+        </span>
+
+    </div>
+
+
+    <!-- VIDEO INFORMATION -->
+
+    <div class="video-info">
+
+        <!-- USERNAME -->
+
+        <a
+            href="{% url 'profile' video.author.username %}"
+            class="video-username"
+        >
+            @{{ video.author.username }}
+        </a>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="video-description">
+
+            {% if video.description %}
+                {{ video.description }}
+            {% else %}
+                No description
+            {% endif %}
+
+        </p>
+
+
+        <!-- DATE -->
+
+        <span class="video-date">
+            🕐 {{ video.upload_date|date:"M d, Y" }}
+        </span>
+
+
+        <!-- VIEWS -->
+
+        <span
+            id="video-detail-view-count"
+            class="video-views"
+        >
+            👁 {{ views_count }} views
+        </span>
+
+    </div>
+
+
+    <!-- BOTTOM CONTROLS -->
+
+    <div class="video-controls">
+
+        <span
+            id="video-detail-time"
+            class="video-time"
+        >
+            0:00 / 0:00
+        </span>
+
+
+        <button
+            type="button"
+            onclick="toggleVideoDetailFullscreen()"
+            class="fullscreen-button"
+        >
+            ⛶
+        </button>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div
+        id="video-detail-progress-hitbox"
+        class="video-progress-hitbox"
+        onpointerdown="startVideoDetailSeek(event)"
+        onpointermove="dragVideoDetailSeek(event)"
+        onpointerup="stopVideoDetailSeek(event)"
+        onpointercancel="stopVideoDetailSeek(event)"
+    >
+
+        <div class="video-progress-track">
+
+            <div
+                id="video-detail-progress"
+                class="video-progress-fill"
+            ></div>
+
+        </div>
+
+    </div>
+
+</article>
+```
+
+</div>
+
+<!-- ====================================================== -->
+
+<!-- COMMENTS -->
+
+<!-- ====================================================== -->
+
+<div
+    id="video-detail-comments-overlay"
+    class="comments-overlay comments-closed"
+>
+
+```
+<div
+    class="comments-background"
+    onclick="closeVideoDetailComments()"
+></div>
+
+
+<div class="comments-panel">
+
+    <!-- HEADER -->
+
+    <div class="comments-header">
+
+        <div>
+
+            <h2>
+                Comments
+            </h2>
+
+            <p
+                id="video-detail-comments-title-count"
+            >
+                {{ video.comments.count }} comments
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            onclick="closeVideoDetailComments()"
+            class="comments-close-button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- COMMENTS LIST -->
+
+    <div
+        id="video-detail-comments-list"
+        class="comments-list"
+    >
+        <div class="comments-loading">
+            Loading comments...
+        </div>
+    </div>
+
+
+    <!-- COMMENT FORM -->
+
+    <div class="comments-form-container">
+
+        <form
+            id="video-detail-comment-form"
+            onsubmit="submitVideoDetailComment(event)"
+            class="comments-form"
+        >
+
+            {% csrf_token %}
+
+            <input
+                id="video-detail-comment-input"
+                type="text"
+                maxlength="200"
+                placeholder="Add a comment..."
+                class="comment-input"
+            >
+
+            <button
+                type="submit"
+                class="comment-submit"
+            >
+                ➤
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    window.VIDEO_DETAIL_ID = "{{ video.id }}";
+    window.VIDEO_DETAIL_LIKED = "{{ liked|yesno:'true,false' }}" === "true";
+</script>
+
+<script src="{% static 'js/video_detail.js' %}"></script>
+
+{% endblock %}

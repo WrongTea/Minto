@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Support{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/support.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<main class="support-page">
+
+    <div class="support-card">
+
+        <div class="support-logo">
+            Minto
+        </div>
+
+
+        <!-- =========================
+             TITLE
+             ========================= -->
+
+        <h1 class="support-title">
+            Contact Support
+        </h1>
+
+        <p class="support-description">
+            Tell us about your problem and our team will review your request.
+        </p>
+
+
+        <!-- =========================
+             SUCCESS MESSAGE
+             ========================= -->
+
+        {% if success %}
+
+            <div class="support-success">
+                Your support request has been sent successfully.
+            </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             NEW TICKET FORM
+             ========================= -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="support-field">
+
+                <label for="subject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    maxlength="200"
+                    placeholder="What is your problem?"
+                    required
+                >
+
+            </div>
+
+
+            <div class="support-field">
+
+                <label for="message">
+                    Message
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Describe your problem..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="support-field">
+
+                <label for="image">
+                    Screenshot
+                    <span>(optional)</span>
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                >
+
+                <p class="support-hint">
+                    You can attach a screenshot to help us understand the problem.
+                </p>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="support-button"
+            >
+                Send Request
+            </button>
+
+        </form>
+
+
+        <!-- =========================
+             PREVIOUS REQUESTS
+             ========================= -->
+
+        {% if tickets %}
+
+            <div class="support-divider"></div>
+
+            <h2 class="tickets-title">
+                Your Requests
+            </h2>
+
+
+            <div class="tickets-list">
+
+                {% for ticket in tickets %}
+
+                    <div class="ticket">
+
+                        <div class="ticket-header">
+
+                            <h3>
+                                {{ ticket.subject }}
+                            </h3>
+
+
+                            {% if ticket.is_resolved %}
+
+                                <span class="ticket-status resolved">
+                                    Resolved
+                                </span>
+
+                            {% else %}
+
+                                <span class="ticket-status open">
+                                    Open
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <p class="ticket-message">
+                            {{ ticket.message }}
+                        </p>
+
+
+                        {% if ticket.image %}
+
+                            <a
+                                href="{{ ticket.image.url }}"
+                                target="_blank"
+                                class="ticket-image-link"
+                            >
+                                View Screenshot
+                            </a>
+
+                        {% endif %}
+
+
+                        {% if ticket.admin_reply %}
+
+                            <div class="admin-reply">
+
+                                <div class="admin-reply-title">
+                                    Minto Support
+                                </div>
+
+                                <p>
+                                    {{ ticket.admin_reply }}
+                                </p>
+
+
+                                {% if ticket.replied_at %}
+
+                                    <span class="reply-date">
+                                        {{ ticket.replied_at|date:"M d, Y H:i" }}
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="ticket-date">
+                            Created {{ ticket.created_at|date:"M d, Y H:i" }}
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             BACK
+             ========================= -->
+
+        <a
+            href="{% url 'account_status' %}"
+            class="support-back"
+        >
+            ← Back
+        </a>
+
+    </div>
+
+</main>
+
+{% endblock %}

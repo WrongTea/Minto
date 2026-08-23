@@ -1,0 +1,322 @@
+.create-video-page {
+width: 100%;
+min-height: 100vh;
+padding: 55px 50px;
+}
+
+.create-video-container {
+width: 100%;
+max-width: 850px;
+margin: 0 auto;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.create-video-header {
+margin-bottom: 35px;
+}
+
+.create-video-header h1 {
+margin: 0 0 10px;
+font-size: 42px;
+font-weight: 700;
+}
+
+.create-video-header p {
+margin: 0;
+color: #8d93a1;
+font-size: 18px;
+}
+
+/* =========================
+FORM
+========================= */
+
+.create-video-form {
+padding: 35px;
+background: #17171b;
+border: 1px solid #28282d;
+border-radius: 22px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+margin-bottom: 28px;
+}
+
+.field-label {
+margin-bottom: 11px;
+color: #ffffff;
+font-size: 18px;
+font-weight: 600;
+}
+
+/* =========================
+INPUTS
+========================= */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+width: 100%;
+
+border: 1px solid #303038;
+border-radius: 14px;
+
+outline: none;
+
+background: #232329;
+color: #ffffff;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: 17px;
+
+transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+}
+
+.form-group input {
+height: 55px;
+padding: 0 17px;
+}
+
+.form-group textarea {
+min-height: 130px;
+padding: 16px 17px;
+resize: vertical;
+}
+
+.form-group select {
+min-height: 55px;
+padding: 0 17px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+border-color: #6257ff;
+background: #27272e;
+}
+
+/* =========================
+VIDEO UPLOAD
+========================= */
+
+#id_video_file {
+display: none;
+}
+
+.video-upload {
+min-height: 210px;
+
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+
+border: 2px dashed #3b3b46;
+border-radius: 18px;
+
+background: #1d1d22;
+
+cursor: pointer;
+
+transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+}
+
+.video-upload {
+border-color: #6257ff;
+background: #211f2b;
+}
+
+.upload-icon {
+width: 58px;
+height: 58px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+margin-bottom: 14px;
+
+border-radius: 50%;
+
+background: #292641;
+color: #7369ff;
+
+font-size: 30px;
+font-weight: 700;
+
+}
+
+.upload-title {
+max-width: 90%;
+
+margin-bottom: 6px;
+
+color: #ffffff;
+
+font-size: 19px;
+font-weight: 600;
+
+text-align: center;
+
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+
+}
+
+.upload-subtitle {
+color: #858b9a;
+font-size: 15px;
+}
+
+/* =========================
+PREVIEW INPUT
+========================= */
+
+.file-input {
+padding: 14px 17px;
+}
+
+/* =========================
+HINT
+========================= */
+
+.field-hint {
+margin-top: 8px;
+
+color: #737a89;
+font-size: 14px;
+
+}
+
+/* =========================
+DESCRIPTION COUNTER
+========================= */
+
+.description-bottom {
+display: flex;
+justify-content: space-between;
+
+margin-top: 8px;
+
+color: #737a89;
+font-size: 14px;
+
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+.form-buttons {
+display: flex;
+justify-content: flex-end;
+
+gap: 14px;
+
+margin-top: 38px;
+
+}
+
+.cancel-button,
+.create-button {
+height: 55px;
+padding: 0 27px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+border-radius: 14px;
+
+font-size: 17px;
+font-weight: 600;
+
+text-decoration: none;
+
+cursor: pointer;
+
+transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+
+}
+
+.cancel-button {
+border: 1px solid #34343c;
+
+background: #232329;
+color: #c2c6d0;
+
+}
+
+.cancel-button {
+background: #2b2b32;
+color: #ffffff;
+}
+
+.create-button {
+border: none;
+
+background: #5145e5;
+color: #ffffff;
+
+box-shadow: 0 8px 24px rgba(81, 69, 229, 0.22);
+
+}
+
+.create-button {
+background: #5d52f3;
+}
+
+.create-button {
+transform: scale(0.98);
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+.create-video-page {
+    padding: 40px 25px;
+}
+
+.create-video-header h1 {
+    font-size: 34px;
+}
+
+}
+
+@media (max-width: 600px) {
+
+.create-video-page {
+    padding: 25px 15px;
+}
+
+.create-video-form {
+    padding: 22px;
+}
+
+.form-buttons {
+    flex-direction: column-reverse;
+}
+
+.cancel-button,
+.create-button {
+    width: 100%;
+}
+
+}
