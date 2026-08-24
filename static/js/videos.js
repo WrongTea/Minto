@@ -63,6 +63,29 @@ function toggleVideo(videoId) {
     }
 }
 
+function toggleMute(event, videoId) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const video = getVideo(videoId);
+    const button = document.getElementById(
+        "mute-button-" + videoId
+    );
+
+    if (!video || !button) {
+        return;
+    }
+
+    video.muted = !video.muted;
+
+    if (video.muted) {
+        button.textContent = "🔇";
+        button.setAttribute("aria-label", "Unmute video");
+    } else {
+        button.textContent = "🔊";
+        button.setAttribute("aria-label", "Mute video");
+    }
+}
 
 function toggleFullscreen(videoId) {
     const video = getVideo(videoId);

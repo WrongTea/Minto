@@ -111,10 +111,23 @@
                                     </span>
 
 
+                                    <!-- MUTE / UNMUTE -->
+                                    <button
+                                        type="button"
+                                        id="mute-button-{{ video.id }}"
+                                        onclick="toggleMute(event, '{{ video.id }}')"
+                                        class="control-button text-base"
+                                        aria-label="Mute video"
+                                    >
+                                        🔊
+                                    </button>
+
+                                    <!-- FULLSCREEN -->
                                     <button
                                         type="button"
                                         onclick="toggleFullscreen('{{ video.id }}')"
-                                        class="control-button text-base ml-auto"
+                                        class="control-button text-base"
+                                        aria-label="Fullscreen"
                                     >
                                         ⛶
                                     </button>
