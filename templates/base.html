@@ -26,6 +26,11 @@
         href="{% static 'css/base.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'css/copy_link.css' %}"
+    >
+
     {% block extra_css %}
     {% endblock %}
 
@@ -154,7 +159,7 @@
             <!-- ================================================= -->
 
             <a
-                href="{% url 'profile' request.user.username %}"
+                href="{% if request.user.is_authenticated %}{% url 'profile' request.user.username %}{% else %}#{% endif %}"
                 class="sidebar-link"
                 data-nav="profile"
             >
@@ -261,11 +266,14 @@
 
 </div>
 
+{% include "copy_link.html" %}
+
 
 <!-- ======================================================== -->
 <!-- BASE JS -->
 <!-- ======================================================== -->
 
+<script src="{% static 'js/common.js' %}"></script>
 <script src="{% static 'js/base.js' %}"></script>
 
 

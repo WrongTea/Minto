@@ -10,11 +10,6 @@
     href="{% static 'css/videos.css' %}"
 >
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/copy_link.css' %}"
->
-
 {% endblock %}
 
 
@@ -49,6 +44,8 @@
                                 class="video-player w-full h-full object-contain"
                                 playsinline
                                 preload="metadata"
+                                muted
+                                data-view-url="{% if request.user.is_authenticated %}{% url 'add_video_view' video.id %}{% endif %}"
                                 onclick="toggleVideo('{{ video.id }}')"
                                 {% if video.preview %}
                                     poster="{{ video.preview.url }}"
@@ -117,9 +114,9 @@
                                         id="mute-button-{{ video.id }}"
                                         onclick="toggleMute(event, '{{ video.id }}')"
                                         class="control-button text-base"
-                                        aria-label="Mute video"
+                                        aria-label="Unmute video"
                                     >
-                                        🔊
+                                        🔇
                                     </button>
 
                                     <!-- FULLSCREEN -->
@@ -398,13 +395,6 @@
     {% endif %}
 
 </div>
-
-
-<!-- =========================================================
-     COPY LINK NOTIFICATION
-     ========================================================= -->
-
-{% include "copy_link.html" %}
 
 
 <!-- =========================================================

@@ -334,6 +334,7 @@
 
 <script>
     window.VIDEO_DETAIL_ID = "{{ video.id }}";
+    window.VIDEO_DETAIL_VIEW_URL = "{% if request.user.is_authenticated %}{% url 'add_video_view' video.id %}{% endif %}";
     window.VIDEO_DETAIL_LIKED = "{{ liked|yesno:'true,false' }}" === "true";
 </script>
 

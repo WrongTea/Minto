@@ -6,9 +6,9 @@ let videoDetailSeekDragging = false;
 
 let videoDetailLiked = false;
 
-let videoDetailViewTimer = null;
-
 let videoDetailViewCounted = false;
+
+let videoDetailViewTracker = null;
 
 
 /* ======================================================
@@ -134,14 +134,17 @@ function updateVideoDetailCenterIndicator() {
 
 if (videoDetailPlayer) {
 
+    videoDetailViewTracker = createVideoViewTracker(
+        videoDetailPlayer,
+        addVideoDetailView
+    );
+
 
     videoDetailPlayer.addEventListener(
         "play",
         function () {
 
             updateVideoDetailCenterIndicator();
-
-            startVideoDetailViewTimer();
 
         }
     );
@@ -152,8 +155,6 @@ if (videoDetailPlayer) {
         function () {
 
             updateVideoDetailCenterIndicator();
-
-            stopVideoDetailViewTimer();
 
         }
     );
@@ -200,8 +201,6 @@ if (videoDetailPlayer) {
             }
 
 
-            stopVideoDetailViewTimer();
-
             updateVideoDetailCenterIndicator();
 
         }
@@ -214,66 +213,20 @@ if (videoDetailPlayer) {
    VIEW COUNTER
 ====================================================== */
 
-function startVideoDetailViewTimer() {
-
-    stopVideoDetailViewTimer();
-
-
-    if (videoDetailViewCounted) {
-        return;
-    }
-
-
-    videoDetailViewTimer =
-        setTimeout(
-            function () {
-
-                addVideoDetailView();
-
-            },
-            3000
-        );
-
-}
-
-
-function stopVideoDetailViewTimer() {
-
-    if (
-        videoDetailViewTimer !== null
-    ) {
-
-        clearTimeout(
-            videoDetailViewTimer
-        );
-
-        videoDetailViewTimer = null;
-
-    }
-
-}
-
-
 async function addVideoDetailView() {
 
     if (
         videoDetailViewCounted ||
-        !window.VIDEO_DETAIL_ID
+        !window.VIDEO_DETAIL_VIEW_URL
     ) {
         return;
     }
-
-
-    videoDetailViewCounted = true;
-
-    stopVideoDetailViewTimer();
-
 
     try {
 
         const response =
             await fetch(
-                `/video/${window.VIDEO_DETAIL_ID}/view/`,
+                window.VIDEO_DETAIL_VIEW_URL,
                 {
                     method: "POST",
 
@@ -290,23 +243,14 @@ async function addVideoDetailView() {
             );
 
 
+        if (!response.ok || response.redirected) {
+            throw new Error("View request failed");
+        }
+
         const data =
             await response.json();
 
-
-        if (!response.ok) {
-
-            console.error(
-                "View error:",
-                data
-            );
-
-            videoDetailViewCounted = false;
-
-            return;
-
-        }
-
+        videoDetailViewCounted = true;
 
         if (
             data.views_count !== undefined
@@ -336,8 +280,6 @@ async function addVideoDetailView() {
             "View request error:",
             error
         );
-
-        videoDetailViewCounted = false;
 
     }
 
@@ -1194,38 +1136,10 @@ function copyVideoDetailLink() {
     const url =
         window.location.href;
 
-
-    if (navigator.clipboard) {
-
-        navigator.clipboard.writeText(
-            url
-        )
-        .then(
-            function () {
-
-                alert(
-                    "Video link copied!"
-                );
-
-            }
-        )
-        .catch(
-            function () {
-
-                alert(
-                    "Could not copy the link."
-                );
-
-            }
-        );
-
-    } else {
-
-        alert(
-            "Could not copy the link."
-        );
-
-    }
+    copyTextWithNotification(
+        url,
+        "Video link copied successfully."
+    );
 
 }
 

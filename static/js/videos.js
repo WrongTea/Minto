@@ -1,5 +1,6 @@
 let isDraggingProgress = false;
 let activeCommentsVideoId = null;
+let feedSoundEnabled = false;
 
 
 /* =========================
@@ -57,10 +58,29 @@ function toggleVideo(videoId) {
     }
 
     if (video.paused) {
-        video.play().catch(function () {});
+        video.play().catch(function (error) {
+            console.error("Video play error:", error);
+        });
     } else {
         video.pause();
     }
+}
+
+function updateFeedSoundState() {
+    document.querySelectorAll(".video-player").forEach(function (video) {
+        const videoId = video.id.replace("video-", "");
+        const button = document.getElementById("mute-button-" + videoId);
+
+        video.muted = !feedSoundEnabled;
+
+        if (button) {
+            button.textContent = feedSoundEnabled ? "🔊" : "🔇";
+            button.setAttribute(
+                "aria-label",
+                feedSoundEnabled ? "Mute video" : "Unmute video"
+            );
+        }
+    });
 }
 
 function toggleMute(event, videoId) {
@@ -68,22 +88,17 @@ function toggleMute(event, videoId) {
     event.stopPropagation();
 
     const video = getVideo(videoId);
-    const button = document.getElementById(
-        "mute-button-" + videoId
-    );
-
-    if (!video || !button) {
+    if (!video) {
         return;
     }
 
-    video.muted = !video.muted;
+    feedSoundEnabled = !feedSoundEnabled;
+    updateFeedSoundState();
 
-    if (video.muted) {
-        button.textContent = "🔇";
-        button.setAttribute("aria-label", "Unmute video");
-    } else {
-        button.textContent = "🔊";
-        button.setAttribute("aria-label", "Mute video");
+    if (feedSoundEnabled && video.paused) {
+        video.play().catch(function (error) {
+            console.error("Video play error:", error);
+        });
     }
 }
 
@@ -775,47 +790,6 @@ function escapeHtml(value) {
    SHARE
    ========================= */
 
-function showCopyLinkNotification(message) {
-
-    const notification =
-        document.getElementById(
-            "copy-link-notification"
-        );
-
-    const messageElement =
-        document.getElementById(
-            "copy-link-message"
-        );
-
-    if (!notification) {
-        return;
-    }
-
-    if (messageElement && message) {
-        messageElement.textContent = message;
-    }
-
-    // Если уведомление уже открыто,
-    // сначала сбрасываем таймер
-    if (window.copyLinkToastTimer) {
-        clearTimeout(
-            window.copyLinkToastTimer
-        );
-    }
-
-    notification.classList.add("show");
-
-    window.copyLinkToastTimer =
-        setTimeout(function () {
-
-            notification.classList.remove(
-                "show"
-            );
-
-        }, 2500);
-}
-
-
 function copyVideoLink(event, videoId) {
 
     event.preventDefault();
@@ -827,93 +801,44 @@ function copyVideoLink(event, videoId) {
         "#video-" +
         videoId;
 
+    copyTextWithNotification(
+        url,
+        "Video link copied successfully."
+    );
+}
 
-    // Современный способ копирования
-    if (
-        navigator.clipboard &&
-        window.isSecureContext
-    ) {
 
-        navigator.clipboard
-            .writeText(url)
+async function addFeedVideoView(video) {
+    const viewUrl = video.dataset.viewUrl;
 
-            .then(function () {
-
-                showCopyLinkNotification(
-                    "Video link copied successfully."
-                );
-
-            })
-
-            .catch(function (error) {
-
-                console.error(
-                    "Copy link error:",
-                    error
-                );
-
-                showCopyLinkNotification(
-                    "Could not copy the link."
-                );
-
-            });
-
+    if (!viewUrl) {
         return;
     }
 
-
-    // Запасной способ для HTTP / старых браузеров
-    const textArea =
-        document.createElement("textarea");
-
-    textArea.value = url;
-
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    textArea.style.top = "0";
-
-    document.body.appendChild(
-        textArea
-    );
-
-    textArea.focus();
-    textArea.select();
-
     try {
+        const response = await fetch(viewUrl, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
 
-        const successful =
-            document.execCommand("copy");
-
-        if (successful) {
-
-            showCopyLinkNotification(
-                "Video link copied successfully."
-            );
-
-        } else {
-
-            showCopyLinkNotification(
-                "Could not copy the link."
-            );
-
+        if (!response.ok || response.redirected) {
+            throw new Error("View request failed");
         }
 
+        const data = await response.json();
+        const count = document.getElementById(
+            "view-count-" + video.id.replace("video-", "")
+        );
+
+        if (count && data.views_count !== undefined) {
+            count.textContent = data.views_count;
+        }
     } catch (error) {
-
-        console.error(
-            "Copy link error:",
-            error
-        );
-
-        showCopyLinkNotification(
-            "Could not copy the link."
-        );
-
+        console.error("View request error:", error);
     }
-
-    document.body.removeChild(
-        textArea
-    );
 }
 
 
@@ -940,6 +865,10 @@ document
             document.getElementById(
                 "current-time-" + videoId
             );
+
+        createVideoViewTracker(video, function () {
+            addFeedVideoView(video);
+        });
 
 
         video.addEventListener(
@@ -1066,6 +995,8 @@ document.addEventListener(
 document.addEventListener("DOMContentLoaded", function () {
     const videos = document.querySelectorAll(".video-player");
 
+    updateFeedSoundState();
+
     const observer = new IntersectionObserver(
         function (entries) {
             entries.forEach(function (entry) {
@@ -1080,7 +1011,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
 
                     // Запускаем текущее
-                    video.play().catch(function () {});
+                    video.play().catch(function (error) {
+                        console.error("Autoplay error:", error);
+                    });
                 } else {
                     // Видео вышло из области просмотра
                     video.pause();

@@ -266,6 +266,8 @@
 
                     <!-- ================= CREATE NEW VIDEO ================= -->
 
+                    {% if request.user == profile_user %}
+
                     <a
                         href="{% url 'create_video' %}"
                         class="relative
@@ -306,6 +308,8 @@
 
                     </a>
 
+                    {% endif %}
+
 
                     <!-- ================= EXISTING VIDEOS ================= -->
 
@@ -331,7 +335,7 @@
                                 onclick="openProfileVideo(this)"
                                 data-video-url="{{ video.video_file.url }}"
                                 data-page-url="{% url 'video_detail' video.id %}"
-                                data-view-url="{% url 'add_video_view' video.id %}"
+                                data-view-url="{% if request.user.is_authenticated %}{% url 'add_video_view' video.id %}{% endif %}"
                                 data-username="{{ video.author.username }}"
                                 data-avatar="{% if video.author.avatar %}{{ video.author.avatar.url }}{% endif %}"
                                 data-description="{{ video.description|default:'No description'|escape }}"

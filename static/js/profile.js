@@ -4,42 +4,23 @@ let currentProfilePageUrl = "";
 let currentProfileVideoId = null;
 let currentProfileLiked = false;
 let currentProfileViewUrl = "";
-let profileViewTimer = null;
-let profileViewCounted = false;
+let profileViewTracker = null;
 
 
 /* ======================================================
    VIEW COUNTER
    ====================================================== */
 
-function startProfileViewTimer() {
-    stopProfileViewTimer();
-    profileViewCounted = false;
-
-    profileViewTimer = setTimeout(function () {
-        addProfileVideoView();
-    }, 3000);
-}
-
-
-function stopProfileViewTimer() {
-    if (profileViewTimer !== null) {
-        clearTimeout(profileViewTimer);
-        profileViewTimer = null;
-    }
-}
-
-
 async function addProfileVideoView() {
-    if (profileViewCounted || !currentProfileVideoId || !currentProfileViewUrl) {
+    if (!currentProfileVideoId || !currentProfileViewUrl) {
         return;
     }
 
-    profileViewCounted = true;
-    stopProfileViewTimer();
+    const viewedVideoId = currentProfileVideoId;
+    const viewUrl = currentProfileViewUrl;
 
     try {
-        const response = await fetch(currentProfileViewUrl, {
+        const response = await fetch(viewUrl, {
             method: "POST",
             headers: {
                 "X-CSRFToken": getCookie("csrftoken"),
@@ -47,17 +28,15 @@ async function addProfileVideoView() {
             }
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("View error:", data);
-            profileViewCounted = false;
-            return;
+        if (!response.ok || response.redirected) {
+            throw new Error("View request failed");
         }
+
+        const data = await response.json();
 
         if (data.views_count !== undefined) {
             const countElement = document.getElementById(
-                "profile-view-count-" + currentProfileVideoId
+                "profile-view-count-" + viewedVideoId
             );
 
             if (countElement) {
@@ -68,7 +47,7 @@ async function addProfileVideoView() {
                 "profile-player-views"
             );
 
-            if (modalCount) {
+            if (modalCount && viewedVideoId === currentProfileVideoId) {
                 modalCount.textContent =
                     "👁 " + data.views_count + " views";
             }
@@ -76,7 +55,6 @@ async function addProfileVideoView() {
 
     } catch (error) {
         console.error("View request error:", error);
-        profileViewCounted = false;
     }
 }
 
@@ -95,13 +73,10 @@ function openProfileVideo(btn) {
 
     if (!modal || !video) return;
 
-    stopProfileViewTimer();
-
     profileVideoUrl = d.videoUrl;
     currentProfileVideoId = d.videoId;
     currentProfileViewUrl = d.viewUrl;
     currentProfilePageUrl = d.pageUrl;
-    profileViewCounted = false;
     currentProfileLiked = (d.liked === "true");
 
     document.getElementById("profile-player-username").textContent =
@@ -165,6 +140,10 @@ function openProfileVideo(btn) {
     video.load();
     video.currentTime = 0;
 
+    if (profileViewTracker) {
+        profileViewTracker.reset();
+    }
+
     document.getElementById("profile-progress").style.width = "0%";
 
     document.getElementById("profile-player-time").textContent =
@@ -177,9 +156,6 @@ function openProfileVideo(btn) {
 
     const startPlayback = function () {
         video.play()
-            .then(function () {
-                startProfileViewTimer();
-            })
             .catch(function (error) {
                 console.warn("Profile video play error:", error);
             });
@@ -205,7 +181,6 @@ function openProfileVideo(btn) {
 
 function closeProfileVideo() {
     closeProfileComments();
-    stopProfileViewTimer();
 
     const modal = document.getElementById(
         "profile-video-modal"
@@ -218,14 +193,17 @@ function closeProfileVideo() {
     if (!modal || !video) return;
 
     video.pause();
+
+    if (profileViewTracker) {
+        profileViewTracker.reset();
+    }
+
     video.removeAttribute("src");
     video.load();
 
     currentProfileVideoId = null;
     currentProfileViewUrl = "";
     currentProfilePageUrl = "";
-    profileViewCounted = false;
-
     modal.classList.add("hidden");
     modal.classList.remove("flex");
 
@@ -734,7 +712,7 @@ function formatProfileTime(seconds) {
 
 function copyProfileVideoLink() {
     if (!currentProfilePageUrl) {
-        alert("Could not determine video URL");
+        showCopyLinkNotification("Could not determine video URL.", true);
         return;
     }
 
@@ -742,27 +720,10 @@ function copyProfileVideoLink() {
         window.location.origin +
         currentProfilePageUrl;
 
-    if (navigator.clipboard) {
-
-        navigator.clipboard
-            .writeText(fullUrl)
-
-            .then(function () {
-                alert(
-                    "Video link copied to clipboard!"
-                );
-            })
-
-            .catch(function () {
-                alert("Failed to copy link.");
-            });
-
-    } else {
-        alert(
-            "Copy manually: " +
-            fullUrl
-        );
-    }
+    copyTextWithNotification(
+        fullUrl,
+        "Video link copied successfully."
+    );
 }
 
 
@@ -776,6 +737,11 @@ const profilePlayerVideo =
     );
 
 if (profilePlayerVideo) {
+
+    profileViewTracker = createVideoViewTracker(
+        profilePlayerVideo,
+        addProfileVideoView
+    );
 
     profilePlayerVideo.addEventListener(
         "loadedmetadata",
@@ -799,13 +765,6 @@ if (profilePlayerVideo) {
         function () {
 
             updateProfileCenterIndicator();
-
-            if (
-                !profileViewCounted &&
-                !profileViewTimer
-            ) {
-                startProfileViewTimer();
-            }
         }
     );
 
@@ -815,8 +774,6 @@ if (profilePlayerVideo) {
         function () {
 
             updateProfileCenterIndicator();
-
-            stopProfileViewTimer();
         }
     );
 
@@ -879,10 +836,6 @@ if (profilePlayerVideo) {
             if (progress) {
                 progress.style.width = "100%";
             }
-
-            stopProfileViewTimer();
-
-            profileViewCounted = false;
 
             updateProfileCenterIndicator();
         }
