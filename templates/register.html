@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Account - Minto
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container flex flex-col items-center justify-center min-h-screen min-w-full py-10">
+    <div class="auth-card mx-auto">
+        
+        <!-- LOGO & HEADING -->
+        <div class="auth-header">
+            <h1 class="logo">Minto</h1>
+            <h2>Create an account</h2>
+            <p class="subtitle">Join Minto to share and watch short videos</p>
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div id="register-error" class="error-message"></div>
+
+        <!-- REGISTER FORM -->
+        <form id="register-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Choose a username" 
+                    required 
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Create a password" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="password_confirm" 
+                    name="password_confirm" 
+                    placeholder="Repeat your password" 
+                    required
+                >
+            </div>
+
+            <button type="submit" id="register-button" class="btn-primary">
+                Sign up
+            </button>
+        </form>
+
+        <!-- DIVIDER -->
+        <div class="divider">
+            <span></span>
+            <p>or</p>
+            <span></span>
+        </div>
+
+        <!-- LINK TO LOGIN -->
+        <a href="{% url 'login' %}" class="btn-secondary">
+            Log in to existing account
+        </a>
+
+        <!-- TERMS -->
+        <p class="terms">
+            By continuing, you agree to Minto's
+            <span class="terms-link">Terms of Service</span>
+            and
+            <span class="terms-link">Privacy Policy</span>.
+        </p>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

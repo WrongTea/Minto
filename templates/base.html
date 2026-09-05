@@ -6,224 +6,251 @@
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        {% block title %}
-            Minto
-        {% endblock %}
-    </title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/base.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/copy_link.css' %}"
-    >
-
-    {% block extra_css %}
+<title>
+    {% block title %}
+        Minto
     {% endblock %}
+</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/base.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/copy_link.css' %}"
+>
+
+{% block extra_css %}
+{% endblock %}
+```
 
 </head>
-
 
 <body>
 
 <div class="minto-layout">
 
+```
+<!-- ====================================================
+     SIDEBAR
+     ==================================================== -->
 
-    <!-- ==================================================== -->
-    <!-- SIDEBAR -->
-    <!-- ==================================================== -->
-
-    <aside class="minto-sidebar">
-
-
-        <!-- ================================================= -->
-        <!-- LOGO -->
-        <!-- ================================================= -->
-
-        <div class="minto-logo">
-            Minto
-        </div>
+<aside class="minto-sidebar">
 
 
-        <!-- ================================================= -->
-        <!-- SEARCH -->
-        <!-- ================================================= -->
+    <!-- =================================================
+         LOGO
+         ================================================= -->
 
-        <div class="minto-search">
+    <div class="minto-logo">
+        Minto
+    </div>
 
-            <form
-                method="GET"
-                action="{% url 'search' %}"
-                id="search-form"
+
+    <!-- =================================================
+         SEARCH
+         ================================================= -->
+
+    <div class="minto-search">
+
+        <form
+            method="GET"
+            action="{% url 'search' %}"
+            id="search-form"
+        >
+
+            <input
+                type="text"
+                name="q"
+                id="search-input"
+                placeholder="Search videos or creators."
+                aria-label="Search videos or creators"
+                autocomplete="off"
             >
 
-                <input
-                    type="text"
-                    name="q"
-                    id="search-input"
-                    placeholder="Search videos or creators."
-                    aria-label="Search videos or creators"
-                    autocomplete="off"
+        </form>
+
+    </div>
+
+
+    <!-- =================================================
+         NAVIGATION
+         ================================================= -->
+
+    <nav class="minto-navigation">
+
+
+        <!-- =================================================
+             FOR YOU
+             ================================================= -->
+
+        <a
+            href="{% url 'feed' %}"
+            class="sidebar-link"
+            data-nav="feed"
+        >
+
+            <span class="sidebar-icon">
+                🔥
+            </span>
+
+            <span>
+                For You
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             FOLLOWED
+             ================================================= -->
+
+        <a
+            href="{% url 'followed' %}"
+            class="sidebar-link"
+            data-nav="followed"
+        >
+
+            <span class="sidebar-icon">
+                👥
+            </span>
+
+            <span>
+                Followed
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             CREATE VIDEO
+             ================================================= -->
+
+        <a
+            href="{% url 'create_video' %}"
+            class="sidebar-link"
+            data-nav="create_video"
+        >
+
+            <span class="sidebar-icon">
+                ➕
+            </span>
+
+            <span>
+                Create Video
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             PROFILE
+             ================================================= -->
+
+        <a
+            href="{% if request.user.is_authenticated %}{% url 'profile' request.user.username %}{% else %}#{% endif %}"
+            class="sidebar-link"
+            data-nav="profile"
+        >
+
+            <span class="sidebar-icon">
+                👤
+            </span>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             ACCOUNT STATUS
+             ================================================= -->
+
+        <a
+            href="{% url 'account_status' %}"
+            class="sidebar-link"
+            data-nav="account_status"
+        >
+
+            <span class="sidebar-icon">
+                ✅
+            </span>
+
+            <span>
+                Account Status
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             REPORT
+             ================================================= -->
+
+        <a
+            href="{% url 'report' %}"
+            class="sidebar-link"
+            data-nav="report"
+        >
+
+            <span class="sidebar-icon">
+                🚩
+            </span>
+
+            <span>
+                Report
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             AUTH BUTTON
+             SIGN IN / LOG OUT
+             ================================================= -->
+
+        {% if request.user.is_authenticated %}
+
+            <form
+                action="{% url 'logout' %}"
+                method="POST"
+                style="margin: 0; width: 100%;"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="signin-button"
                 >
+
+                    <span>
+                        Log Out
+                    </span>
+
+                </button>
 
             </form>
 
-        </div>
-
-
-        <!-- ================================================= -->
-        <!-- NAVIGATION -->
-        <!-- ================================================= -->
-
-        <nav class="minto-navigation">
-
-
-            <!-- ================================================= -->
-            <!-- FOR YOU -->
-            <!-- ================================================= -->
+        {% else %}
 
             <a
-                href="{% url 'feed' %}"
-                class="sidebar-link"
-                data-nav="feed"
-            >
-
-                <span class="sidebar-icon">
-                    🔥
-                </span>
-
-                <span>
-                    For You
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- FOLLOWED -->
-            <!-- ================================================= -->
-
-            <a
-                href="{% url 'followed' %}"
-                class="sidebar-link"
-                data-nav="followed"
-            >
-
-                <span class="sidebar-icon">
-                    👥
-                </span>
-
-                <span>
-                    Followed
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- CREATE VIDEO -->
-            <!-- ================================================= -->
-
-            <a
-                href="{% url 'create_video' %}"
-                class="sidebar-link"
-                data-nav="create_video"
-            >
-
-                <span class="sidebar-icon">
-                    ➕
-                </span>
-
-                <span>
-                    Create Video
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- PROFILE -->
-            <!-- ================================================= -->
-
-            <a
-                href="{% if request.user.is_authenticated %}{% url 'profile' request.user.username %}{% else %}#{% endif %}"
-                class="sidebar-link"
-                data-nav="profile"
-            >
-
-                <span class="sidebar-icon">
-                    👤
-                </span>
-
-                <span>
-                    Profile
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- ACCOUNT STATUS -->
-            <!-- ================================================= -->
-
-            <a
-                href="{% url 'account_status' %}"
-                class="sidebar-link"
-                data-nav="account_status"
-            >
-
-                <span class="sidebar-icon">
-                    ✅
-                </span>
-
-                <span>
-                    Account Status
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- REPORT -->
-            <!-- ================================================= -->
-
-            <a
-                href="{% url 'report' %}"
-                class="sidebar-link"
-                data-nav="report"
-            >
-
-                <span class="sidebar-icon">
-                    🚩
-                </span>
-
-                <span>
-                    Report
-                </span>
-
-            </a>
-
-
-            <!-- ================================================= -->
-            <!-- SIGN IN -->
-            <!-- ================================================= -->
-
-            <a
-                href="#"
-                class="sidebar-link signin-button"
+                href="{% url 'login' %}"
+                class="signin-button"
             >
 
                 <span>
@@ -232,58 +259,58 @@
 
             </a>
 
+        {% endif %}
 
-        </nav>
+
+    </nav>
 
 
-        <!-- ================================================= -->
-        <!-- BOTTOM -->
-        <!-- ================================================= -->
+    <!-- =================================================
+         BOTTOM
+         ================================================= -->
 
-        <div class="minto-sidebar-bottom">
+    <div class="minto-sidebar-bottom">
 
-            <div class="minto-copyright">
-                © Minto Video Platform
-            </div>
-
+        <div class="minto-copyright">
+            © Minto Video Platform
         </div>
 
+    </div>
 
-    </aside>
+
+</aside>
 
 
-    <!-- ==================================================== -->
-    <!-- MAIN CONTENT -->
-    <!-- ==================================================== -->
+<!-- ====================================================
+     MAIN CONTENT
+     ==================================================== -->
 
-    <main class="minto-main">
+<main class="minto-main">
 
-        {% block content %}
-        {% endblock %}
+    {% block content %}
+    {% endblock %}
 
-    </main>
-
+</main>
+```
 
 </div>
 
 {% include "copy_link.html" %}
 
-
-<!-- ======================================================== -->
-<!-- BASE JS -->
-<!-- ======================================================== -->
+<!-- ========================================================
+     BASE JS
+     ======================================================== -->
 
 <script src="{% static 'js/common.js' %}"></script>
-<script src="{% static 'js/base.js' %}"></script>
 
+<script src="{% static 'js/base.js' %}"></script>
 
 {% block extra_js %}
 {% endblock %}
 
-
-<!-- ======================================================== -->
-<!-- ACTIVE NAVIGATION -->
-<!-- ======================================================== -->
+<!-- ========================================================
+     ACTIVE NAVIGATION
+     ======================================================== -->
 
 {% if request.user.is_authenticated and not request.user.banned %}
 
@@ -307,9 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // подсвечиваем For You
 
     if (!activeNav) {
-
         activeNav = "feed";
-
     }
 
 
@@ -389,7 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 {% endif %}
-
 
 </body>
 

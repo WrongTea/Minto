@@ -1,0 +1,425 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+body {
+font-family: Arial, Helvetica, sans-serif;
+background: #101014;
+color: #ffffff;
+min-height: 100vh;
+}
+
+/* =========================
+AUTH PAGE
+========================= */
+
+.auth-page {
+min-height: 100vh;
+
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+padding: 30px;
+
+
+}
+
+/* =========================
+AUTH CARD
+========================= */
+
+.auth-card {
+width: 100%;
+max-width: 440px;
+
+
+padding: 42px;
+
+background: #17171b;
+
+border: 1px solid #28282d;
+border-radius: 20px;
+
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+
+
+}
+
+/* =========================
+LOGO
+========================= */
+
+.logo {
+text-align: center;
+
+
+font-size: 40px;
+line-height: 1;
+
+font-weight: 700;
+
+color: #6257ff;
+
+margin-bottom: 35px;
+
+
+}
+
+/* =========================
+TITLE
+========================= */
+
+.auth-card h1 {
+text-align: center;
+
+
+font-size: 28px;
+font-weight: 700;
+
+color: #ffffff;
+
+margin-bottom: 8px;
+
+
+}
+
+.subtitle {
+text-align: center;
+
+
+color: #70788a;
+
+font-size: 15px;
+
+margin-bottom: 32px;
+
+
+}
+
+/* =========================
+FORM
+========================= */
+
+.login-form {
+display: flex;
+flex-direction: column;
+
+
+gap: 18px;
+
+
+}
+
+.input-group {
+display: flex;
+flex-direction: column;
+
+
+gap: 8px;
+
+
+}
+
+.input-group label {
+color: #b8bdc9;
+
+
+font-size: 14px;
+font-weight: 600;
+
+
+}
+
+.input-group input {
+width: 100%;
+height: 52px;
+
+
+padding: 0 16px;
+
+border: 1px solid #2c2c33;
+border-radius: 12px;
+
+outline: none;
+
+background: #232329;
+color: #ffffff;
+
+font-size: 15px;
+
+transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+
+}
+
+.input-group input::placeholder {
+color: #70788a;
+}
+
+.input-group input:focus {
+border-color: #6257ff;
+
+
+background: #27272e;
+
+box-shadow: 0 0 0 3px rgba(98, 87, 255, 0.12);
+
+
+}
+
+/* =========================
+LOGIN BUTTON
+========================= */
+
+.login-button {
+width: 100%;
+height: 54px;
+
+
+margin-top: 5px;
+
+border: none;
+border-radius: 14px;
+
+background: #5145e5;
+color: #ffffff;
+
+font-size: 16px;
+font-weight: 700;
+
+cursor: pointer;
+
+box-shadow: 0 8px 24px rgba(81, 69, 229, 0.25);
+
+transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+
+
+}
+
+.login-button:hover {
+background: #5c50f2;
+
+
+box-shadow: 0 10px 28px rgba(81, 69, 229, 0.35);
+
+
+}
+
+.login-button:active {
+transform: scale(0.98);
+}
+
+/* =========================
+DIVIDER
+========================= */
+
+.divider {
+display: flex;
+align-items: center;
+
+
+gap: 14px;
+
+margin: 28px 0;
+
+
+}
+
+.divider::before,
+.divider::after {
+content: "";
+
+
+flex: 1;
+
+height: 1px;
+
+background: #28282d;
+
+
+}
+
+.divider span {
+color: #70788a;
+
+
+font-size: 13px;
+
+
+}
+
+/* =========================
+REGISTER BUTTON
+========================= */
+
+.register-button {
+width: 100%;
+height: 52px;
+
+
+background: #17171b;
+
+border: 1px solid #2c2c33;
+border-radius: 14px;
+
+color: #b8bdc9;
+
+font-size: 15px;
+font-weight: 600;
+
+cursor: pointer;
+
+transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+
+}
+
+.register-button:hover {
+background: #202027;
+
+
+border-color: #6257ff;
+
+color: #ffffff;
+
+
+}
+
+/* =========================
+TERMS
+========================= */
+
+.terms {
+text-align: center;
+
+
+color: #70788a;
+
+font-size: 12px;
+
+line-height: 1.6;
+
+margin-top: 25px;
+
+
+}
+
+.terms a {
+color: #6257ff;
+
+
+text-decoration: none;
+
+transition: color 0.2s ease;
+
+
+}
+
+.terms a:hover {
+color: #8490ff;
+
+
+text-decoration: underline;
+
+
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+
+.auth-page {
+    padding: 20px;
+}
+
+.auth-card {
+    padding: 32px 24px;
+
+    border-radius: 17px;
+}
+
+.logo {
+    font-size: 34px;
+
+    margin-bottom: 30px;
+}
+
+.auth-card h1 {
+    font-size: 24px;
+}
+
+.subtitle {
+    font-size: 14px;
+}
+}
+
+.btn-create-account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 52px;
+
+    background: #232329; /* Серый фон, совпадающий с полями ввода */
+    border: 1px solid #2c2c33;
+    border-radius: 12px;
+
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.btn-create-account:hover {
+    background: #2a2a32;
+    border-color: #3b3b45;
+    color: #ffffff;
+}
+
+.btn-create-account:active {
+    transform: scale(0.98);
+}
+
+.auth-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.minto-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    background: #101014;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,240 @@
+/* =========================
+   404 PAGE
+   ========================= */
+
+.error-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+}
+
+
+/* =========================
+   CONTENT
+   ========================= */
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    transform: translateY(-25px);
+}
+
+
+/* =========================
+   404 NUMBER
+   ========================= */
+
+.error-code {
+    font-size: clamp(150px, 18vw, 280px);
+    line-height: 0.85;
+
+    font-weight: 800;
+    letter-spacing: -12px;
+
+    color: #6257ff;
+
+    text-shadow:
+        0 0 50px rgba(98, 87, 255, 0.15);
+
+    user-select: none;
+}
+
+
+/* =========================
+   DECORATIVE LINE
+   ========================= */
+
+.error-line {
+    width: 70px;
+    height: 4px;
+
+    margin: 35px 0 28px;
+
+    border-radius: 10px;
+
+    background: #6257ff;
+
+    box-shadow:
+        0 0 20px rgba(98, 87, 255, 0.35);
+}
+
+
+/* =========================
+   TITLE
+   ========================= */
+
+.error-content h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+
+/* =========================
+   DESCRIPTION
+   ========================= */
+
+.error-content p {
+    margin: 16px 0 30px;
+
+    color: #8f96a8;
+
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   BUTTON
+   ========================= */
+
+.error-button {
+    min-width: 230px;
+    height: 62px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 0 26px;
+
+    border-radius: 16px;
+
+    background: #5145e5;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 30px rgba(81, 69, 229, 0.25);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.error-button span {
+    font-size: 21px;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.error-button:hover {
+    background: #5c50f2;
+
+    box-shadow:
+        0 12px 35px rgba(81, 69, 229, 0.35);
+
+    transform: translateY(-2px);
+}
+
+
+.error-button:hover span {
+    transform: translateX(-4px);
+}
+
+
+.error-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 800px) {
+
+    .error-page {
+        padding: 30px;
+    }
+
+    .error-content {
+        transform: translateY(-10px);
+    }
+
+    .error-code {
+        font-size: 180px;
+        letter-spacing: -8px;
+    }
+
+    .error-content h1 {
+        font-size: 29px;
+    }
+
+    .error-content p {
+        font-size: 17px;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .error-page {
+        padding: 20px;
+    }
+
+    .error-code {
+        font-size: 130px;
+        letter-spacing: -6px;
+    }
+
+    .error-line {
+        width: 55px;
+        height: 3px;
+
+        margin: 25px 0 22px;
+    }
+
+    .error-content h1 {
+        font-size: 24px;
+    }
+
+    .error-content p {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-top: 12px;
+    }
+
+    .error-button {
+        width: 100%;
+        max-width: 250px;
+
+        height: 56px;
+
+        font-size: 16px;
+    }
+
+}
+
+body {
+    background: #101014 !important;
+}

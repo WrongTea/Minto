@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Log in - Minto
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container flex flex-col items-center justify-center min-h-screen min-w-full py-10">
+
+    <div class="auth-card mx-auto">
+
+        <!-- LOGO -->
+        <div class="logo">
+            Minto
+        </div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Log in to continue to Minto
+        </p>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form">
+
+            {% csrf_token %}
+
+            <!-- USERNAME -->
+            <div class="input-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+            <!-- ERROR -->
+            <div
+                id="login-error"
+                class="login-error"
+            ></div>
+
+            <!-- LOGIN BUTTON -->
+            <button
+                type="submit"
+                id="login-button"
+                class="login-button"
+            >
+                <span id="login-button-text">
+                    Log in
+                </span>
+
+                <span
+                    id="login-loader"
+                    class="loader"
+                ></span>
+            </button>
+
+        </form>
+
+        <!-- DIVIDER -->
+        <div class="divider">
+
+            <span></span>
+
+            <p>or</p>
+
+            <span></span>
+
+        </div>
+
+        <!-- REGISTER BUTTON -->
+        <a href="{% url 'register' %}" class="btn-create-account">
+            Create account
+        </a>
+
+        <!-- TERMS -->
+        <p class="terms">
+            By continuing, you agree to Minto's
+            <span class="terms-link">Terms of Service</span>
+            and
+            <span class="terms-link">Privacy Policy</span>.
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/login.js' %}?v=2"></script>
+{% endblock %}

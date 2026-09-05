@@ -5,7 +5,10 @@
 {% block title %}Edit Profile | Minto{% endblock %}
 
 {% block extra_css %}
+
 <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/warning_delete_account.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -17,10 +20,15 @@
         <!-- ================= HEADER ================= -->
 
         <div class="edit-profile-header">
+
             <div>
                 <h1>Edit Profile</h1>
-                <p>Change your profile information</p>
+
+                <p>
+                    Change your profile information
+                </p>
             </div>
+
         </div>
 
 
@@ -29,9 +37,11 @@
         <div class="edit-profile-card">
 
             {% if error %}
+
                 <div class="edit-profile-error">
                     {{ error }}
                 </div>
+
             {% endif %}
 
 
@@ -52,18 +62,22 @@
                     <div class="edit-profile-avatar">
 
                         {% if request.user.avatar %}
+
                             <img
                                 id="avatar-preview"
                                 src="{{ request.user.avatar.url }}"
                                 alt="Profile picture"
                             >
+
                         {% else %}
+
                             <div
                                 class="edit-profile-avatar-placeholder"
                                 id="avatar-placeholder"
                             >
                                 {{ request.user.username|first|upper }}
                             </div>
+
                         {% endif %}
 
                     </div>
@@ -71,7 +85,9 @@
 
                     <div class="edit-profile-avatar-info">
 
-                        <h2>Profile picture</h2>
+                        <h2>
+                            Profile picture
+                        </h2>
 
                         <p>
                             Choose a new profile picture
@@ -190,12 +206,72 @@
 
             </form>
 
+
+            <!-- ================= DELETE ACCOUNT ================= -->
+
+            <div class="edit-profile-delete-section">
+
+                <button
+                    type="button"
+                    class="edit-profile-delete"
+                    id="deleteAccountButton"
+                >
+                    Delete account
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DELETE ACCOUNT MODAL ================= -->
+
+    <div
+        class="delete-account-modal"
+        id="deleteAccountModal"
+    >
+
+        <div class="delete-account-modal-box">
+
+            <h3 class="delete-account-modal-title">
+                Delete account?
+            </h3>
+
+            <p class="delete-account-modal-message">
+                Are you sure you want to delete your account?
+                This action cannot be undone.
+            </p>
+
+            <div class="delete-account-modal-buttons">
+
+                <button
+                    type="button"
+                    class="delete-account-modal-button delete-account-modal-cancel"
+                    id="deleteAccountCancel"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="delete-account-modal-button delete-account-modal-confirm"
+                    id="deleteAccountConfirm"
+                >
+                    Delete account
+                </button>
+
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
+
 <script src="{% static 'js/edit_profile.js' %}"></script>
+<script src="{% static 'js/warning_delete_account.js' %}"></script>
 
 {% endblock %}

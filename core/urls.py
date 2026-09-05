@@ -88,14 +88,10 @@ urlpatterns = [
         views.create_video,
         name="create_video"
     ),
-    path(
-    "video/<int:video_id>/delete/",
-    views.delete_video,
-    name="delete_video"
-    ),
-    path(
-    "edit_profile/",
-    views.edit_profile,
-    name="edit_profile"
-    ),
+    path("video/<int:video_id>/delete/", views.delete_video, name="delete_video"),
+    path("edit_profile/", views.edit_profile, name="edit_profile"),
+    path("login/", views.login, name="login"),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register_view, name='register'), 
+    path("delete-account/",views.delete_account,name="delete_account"),
 ]

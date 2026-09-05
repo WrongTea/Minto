@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
 from datetime import datetime
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Video, User, Follow, Like, Comment, View, SupportTicket, Report, Hashtag, Category
 
@@ -12,29 +14,30 @@ from .models import Video, User, Follow, Like, Comment, View, SupportTicket, Rep
 # VIDEOS
 # ============================================================
 
-def videos(request):
-    videos = (
+def videos(request): # функция videos к которая принимает переменную request
+    videos = ( # из чего состоит видео
         Video.objects
-        .all()
-        .select_related("author", "category")
-        .prefetch_related("hashtags", "likes", "comments")
-        .annotate(views_count=Count("views"))
-        .order_by("-upload_date")
+        .all() # все видео
+        .select_related("author", "category") # связанные по автору и категории
+        .prefetch_related("hashtags", "likes", "comments") # заранее загрузить хештеги, лайки, коменты
+        .annotate(views_count=Count("views")) # посчитать количество просмотров для каждого видео прямо в базе данных 
+        # и сохранить это число в новое поле
+        .order_by("-upload_date") # сортировка по дате выкладывания(минус означает что самые новые)
     )
 
-    liked_video_ids = set()
+    liked_video_ids = set() # создаем пустое множество для хранения уникальных ID лайкнутых видео
 
-    if request.user.is_authenticated:
-        liked_video_ids = set(
-            Like.objects.filter(
-                user=request.user,
-                video__in=videos
-            ).values_list("video_id", flat=True)
+    if request.user.is_authenticated: # если запрос отправил авторированный пользователь
+        liked_video_ids = set( # заполняем множество
+            Like.objects.filter( # фильтр по лайкам
+                user=request.user, # по пользователю
+                video__in=videos # и по видео
+            ).values_list("video_id", flat=True) # забираем только ID видео в виде плоского списка чисел
         )
 
-    return render(request, "videos.html", {
-        "videos": videos,
-        "liked_video_ids": liked_video_ids,
+    return render(request, "videos.html", { # вернуть запрос и отображение страницы 
+        "videos": videos, # передать список всех видео в шаблон под именем "videos"
+        "liked_video_ids": liked_video_ids, # передать ID лайкнутых видео, чтобы подсветить лайки в шаблоне
     })
 
 
@@ -619,3 +622,109 @@ def edit_profile(request):
     return render(request, "edit_profile.html", {
         "profile_user": user
     })
+
+@ensure_csrf_cookie
+def login(request):
+
+    if request.method == "POST":
+
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+
+        if not username or not password:
+            return JsonResponse({
+                "success": False,
+                "error": "Please enter username and password."
+            }, status=400)
+
+        user = authenticate(
+            request=request,
+            username=username,
+            password=password
+        )
+
+        if user is None:
+            return JsonResponse({
+                "success": False,
+                "error": "Invalid username or password."
+            }, status=400)
+
+        if hasattr(user, "banned") and user.banned:
+            return JsonResponse({
+                "success": False,
+                "error": "Your account has been restricted."
+            }, status=403)
+
+        auth_login(request, user)
+
+        return JsonResponse({
+            "success": True,
+            "redirect": "/"
+        })
+
+    # При GET-запросе декоратор @ensure_csrf_cookie автоматически
+    # установит CSRF-куку в браузер перед рендером страницы
+    return render(request, "login.html")
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def register_view(request):
+    if request.method == 'POST':
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+        password_confirm = request.POST.get('password_confirm', '')
+
+        if not username or not password or not password_confirm:
+            error = 'Please fill in all fields.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error}, status=400)
+            return render(request, 'register.html', {'error': error})
+
+        if password != password_confirm:
+            error = 'Passwords do not match.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error}, status=400)
+            return render(request, 'register.html', {'error': error})
+
+        if User.objects.filter(username__iexact=username).exists():
+            error = 'Username is already taken.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error}, status=400)
+            return render(request, 'register.html', {'error': error})
+
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        # Используем переименованную функцию auth_login
+        auth_login(request, user)
+
+        if is_ajax:
+            return JsonResponse({
+                'success': True,
+                'redirect': '/'
+            })
+
+        return redirect('feed')
+
+    return render(request, 'register.html')
+
+@login_required
+def delete_account(request):
+    if request.method == "POST":
+        user = request.user
+
+        logout(request)
+        user.delete()
+
+        return JsonResponse({
+            "success": True
+        })
+
+    return JsonResponse({
+        "success": False,
+        "error": "Invalid request method."
+    }, status=405)

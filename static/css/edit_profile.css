@@ -431,3 +431,36 @@
     filter: invert(42%) sepia(95%) saturate(3000%) hue-rotate(225deg) brightness(100%) contrast(100%);
     cursor: pointer;
 }
+
+/* =========================================================
+DELETE ACCOUNT
+========================================================= */
+
+.edit-profile-delete-section {
+margin-top: 24px;
+padding-top: 24px;
+border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.edit-profile-delete {
+height: 44px;
+padding: 0 20px;
+border-radius: 11px;
+border: 1px solid rgba(239, 68, 68, 0.65);
+background: transparent;
+color: #ef4444;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: 0.15s ease;
+}
+
+.edit-profile-delete:hover {
+background: rgba(239, 68, 68, 0.08);
+border-color: #ef4444;
+color: #f87171;
+}
+
+.edit-profile-delete:active {
+transform: scale(0.98);
+}
