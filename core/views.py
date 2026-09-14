@@ -728,3 +728,4 @@ def delete_account(request):
         "success": False,
         "error": "Invalid request method."
     }, status=405)
+
