@@ -1,0 +1,206 @@
+/* =========================================================
+   MINTO DJANGO ADMIN CUSTOM STYLES
+   ========================================================= */
+
+/* Общий фон и текст */
+body, #container {
+    background-color: #101014 !important;
+    color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+a:link, a:visited {
+    color: #7380ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #8490ff;
+}
+
+/* ---------------------------------------------------------
+   HEADER & BRANDING
+   --------------------------------------------------------- */
+#header {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 15px 25px !important;
+}
+
+.minto-brand-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #6257ff;
+    margin-right: 10px;
+}
+
+.minto-brand-badge {
+    font-size: 14px;
+    background: #211f3b;
+    color: #7380ff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+#user-tools {
+    font-size: 14px !important;
+    color: #b8bdc9 !important;
+}
+
+#user-tools a {
+    color: #ffffff !important;
+    background: #232329;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #2c2c33;
+    margin-left: 5px;
+}
+
+#user-tools a:hover {
+    background: #2a2a32;
+    border-color: #3b3b45;
+}
+
+/* ---------------------------------------------------------
+   BREADCRUMBS & MODULES
+   --------------------------------------------------------- */
+div.breadcrumbs {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    color: #9ca8bd !important;
+    padding: 12px 25px !important;
+}
+
+div.breadcrumbs a {
+    color: #b8bdc9 !important;
+}
+
+.module {
+    background: #17171b !important;
+    border: 1px solid #28282d !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    margin-bottom: 25px !important;
+}
+
+.module h2, .module caption, header.module h2 {
+    background: #202027 !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    padding: 12px 20px !important;
+    border-bottom: 1px solid #28282d !important;
+}
+
+/* ---------------------------------------------------------
+   TABLES (CHANGE LIST)
+   --------------------------------------------------------- */
+#changelist table {
+    background: #17171b !important;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#changelist table thead th {
+    background: #1f1f25 !important;
+    color: #b8bdc9 !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 12px 15px !important;
+}
+
+#changelist table tbody tr {
+    border-bottom: 1px solid #232329 !important;
+}
+
+#changelist table tbody tr:nth-child(odd) {
+    background-color: #17171b !important;
+}
+
+#changelist table tbody tr:nth-child(even) {
+    background-color: #141418 !important;
+}
+
+#changelist table tbody tr:hover {
+    background-color: #202027 !important;
+}
+
+#changelist table td, #changelist table th {
+    padding: 12px 15px !important;
+    color: #ffffff !important;
+}
+
+/* ---------------------------------------------------------
+   FILTERS & SEARCH BAR
+   --------------------------------------------------------- */
+#changelist-filter {
+    background: #17171b !important;
+    border-left: 1px solid #28282d !important;
+}
+
+#changelist-filter h2 {
+    background: #232329 !important;
+    color: #ffffff !important;
+}
+
+#changelist-filter li.selected a {
+    color: #7380ff !important;
+    font-weight: bold;
+}
+
+#toolbar, #changelist-search {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 15px !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"], select, textarea {
+    background: #232329 !important;
+    border: 1px solid #2c2c33 !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    outline: none;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: #6257ff !important;
+    background: #27272e !important;
+}
+
+/* ---------------------------------------------------------
+   BUTTONS & ACTIONS
+   --------------------------------------------------------- */
+.button, input[type="submit"], input[type="button"], .submit-row input {
+    background: #5145e5 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 10px 20px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background: #5c50f2 !important;
+}
+
+.button.deletelink, input[type="submit"].deletelink {
+    background: #e54545 !important;
+}
+
+.button.deletelink:hover {
+    background: #f25050 !important;
+}
+
+/* ---------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------- */
+.minto-admin-footer {
+    text-align: center;
+    padding: 20px;
+    color: #70788a;
+    font-size: 14px;
+    border-top: 1px solid #28282d;
+    margin-top: 40px;
+}

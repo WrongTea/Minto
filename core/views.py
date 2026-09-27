@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
 from datetime import datetime
@@ -729,3 +729,13 @@ def delete_account(request):
         "error": "Invalid request method."
     }, status=405)
 
+@login_required
+def delete_comment(request, comment_id):
+
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Вы не можете удалить чужой комментарий.")
+    if request.method == "POST":
+        video_id = comment.video.id
+        comment.delete()
+    return redirect("video_detail", pk=comment.video.id)
