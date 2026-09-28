@@ -3,6 +3,58 @@
    ========================================================= */
 
 /* Общий фон и текст */
+/* Cover native Django widgets too (sidebar, forms, actions and calendars). */
+:root {
+    color-scheme: dark;
+    --primary: #5145e5;
+    --secondary: #202027;
+    --accent: #a49cff;
+    --primary-fg: #ffffff;
+    --body-bg: #101014;
+    --body-fg: #ffffff;
+    --body-quiet-color: #b8bdc9;
+    --body-medium-color: #d0d3dc;
+    --body-loud-color: #ffffff;
+    --header-bg: #17171b;
+    --header-color: #b8bdc9;
+    --header-branding-color: #a49cff;
+    --header-link-color: #ffffff;
+    --breadcrumbs-bg: #17171b;
+    --breadcrumbs-fg: #b8bdc9;
+    --breadcrumbs-link-fg: #d0d3dc;
+    --link-fg: #a49cff;
+    --link-hover-color: #c1bbff;
+    --link-selected-fg: #a49cff;
+    --hairline-color: #28282d;
+    --border-color: #41414b;
+    --darkened-bg: #17171b;
+    --selected-bg: #232329;
+    --selected-row: #302b50;
+    --button-bg: #5145e5;
+    --button-hover-bg: #5c50f2;
+    --default-button-bg: #5145e5;
+    --default-button-hover-bg: #5c50f2;
+    --object-tools-bg: #5145e5;
+    --object-tools-hover-bg: #5c50f2;
+    --close-button-bg: #41414b;
+    --close-button-hover-bg: #555563;
+    --error-fg: #ff9999;
+    --message-debug-bg: #33333b;
+    --message-info-bg: #203d5b;
+    --message-success-bg: #19452c;
+    --message-warning-bg: #514019;
+    --message-error-bg: #542323;
+}
+
+.theme-toggle {
+    display: none;
+}
+
+:focus-visible {
+    outline: 2px solid #a49cff;
+    outline-offset: 2px;
+}
+
 body, #container {
     background-color: #101014 !important;
     color: #ffffff !important;
@@ -80,7 +132,6 @@ div.breadcrumbs a {
     background: #17171b !important;
     border: 1px solid #28282d !important;
     border-radius: 16px !important;
-    overflow: hidden;
     margin-bottom: 25px !important;
 }
 
@@ -159,7 +210,6 @@ input[type="text"], input[type="password"], input[type="email"], select, textare
     border-radius: 10px !important;
     color: #ffffff !important;
     padding: 8px 12px !important;
-    outline: none;
 }
 
 input[type="text"]:focus, select:focus, textarea:focus {

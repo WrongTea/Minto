@@ -5,12 +5,15 @@ Requires Python 3.12 or newer. From the project directory (PowerShell):
 ```powershell
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python manage.py migrate
+.venv\Scripts\python manage.py createsuperuser
 .venv\Scripts\python manage.py check
 .venv\Scripts\python manage.py collectstatic --noinput
 .venv\Scripts\python manage.py runserver 127.0.0.1:8000
 ```
 
-`DEBUG=False` remains enabled. WhiteNoise serves files collected into
+The current upstream settings use `DEBUG=True` for local development.
+With `DEBUG=False`, WhiteNoise serves files collected into
 `staticfiles/`; edit originals in `static/`, never the collected copies.
 After changing CSS, stop your server, run `collectstatic --noinput` again,
 restart it and refresh the browser without cache (Ctrl+F5).
@@ -22,13 +25,28 @@ For deployment, run collectstatic before starting/restarting your WSGI server.
 .venv\Scripts\python manage.py test
 ```
 
-The custom `404.html` is rendered by Django's default 404 handler, with HTTP
-status 404. It uses local CSS and does not require Tailwind.
+The custom `404.html` works with both `DEBUG=True` and `DEBUG=False`, with HTTP
+status 404. In debug mode, `Debug404Middleware` replaces HTML 404 bodies while
+preserving JSON responses and Django's diagnostic pages for server errors.
+With debug disabled, Django's default 404 handler renders the template.
+It uses local CSS and does not require Tailwind.
 Ordinary pages retain their existing Tailwind CDN dependency in `base.html`;
 their utility classes require access to `https://cdn.tailwindcss.com`.
 WhiteNoise configuration follows the [official integration guide](https://whitenoise.readthedocs.io/en/stable/django.html).
 
-## Scope of this checkout and verification
+## Admin styling
+
+Open `/admin/` with a staff account. The override must be
+`templates/admin/base_site.html` (including the `admin` directory).
+It extends Django's admin layout and loads `static/css/admin_custom.css`;
+the public site's `templates/base.html` is a separate layout.
+The admin uses a fixed dark palette matching the student's original CSS.
+After editing CSS with `DEBUG=False`, collect static files and restart the
+server as shown above. Never edit files inside `.venv` or `staticfiles`.
+
+See [the admin repair report](ADMIN_FIX_REPORT.md) for causes and verification.
+
+## Earlier checkout verification (historical)
 
 This is a separate diagnostic clone, `Minto-remote-review`, based on GitHub
 `main` at `72061e7`. Fetch and pull --ff-only completed before changes.

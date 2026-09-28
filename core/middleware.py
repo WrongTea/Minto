@@ -1,5 +1,28 @@
+from django.conf import settings
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.utils import timezone
+
+
+class Debug404Middleware:
+    """Show the site's HTML 404 locally while retaining other diagnostics."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if (
+            settings.DEBUG
+            and response.status_code == 404
+            and not response.streaming
+            and response.get('Content-Type', '').split(';')[0] == 'text/html'
+        ):
+            response.content = render_to_string('404.html', request=request)
+            # CommonMiddleware outside this middleware recalculates the length.
+            if 'Content-Length' in response:
+                del response['Content-Length']
+        return response
 
 
 class BannedUserMiddleware:

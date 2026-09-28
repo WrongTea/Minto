@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.BannedUserMiddleware',
+    'core.middleware.Debug404Middleware',
 ]
 
 ROOT_URLCONF = 'config.urls'

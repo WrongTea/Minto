@@ -1,8 +1,13 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from .models import (User, Category, Hashtag, Video, Follow, Like, Comment, Favorite, View, SupportTicket, Report)
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(DjangoUserAdmin):
+    fieldsets = DjangoUserAdmin.fieldsets + (
+        ("Minto profile", {"fields": ("avatar", "description", "birth_date")}),
+        ("Moderation", {"fields": ("banned", "ban_reason", "ban_until")}),
+    )
     list_display = ("username", "email", "is_staff", "banned","ban_reason", "ban_until")
     search_fields = ("username", "email")
     list_filter = ("banned", "is_staff", "is_superuser")
@@ -49,7 +54,7 @@ class ViewAdmin(admin.ModelAdmin):
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ("author", "video_file", "preview", "description","category",)
-    search_fields = ("author", "category",)
+    search_fields = ("author__username", "category__name", "description")
     list_filter = ("author", "category", )
     ordering = ("-upload_date",)
 
