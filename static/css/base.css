@@ -28,13 +28,19 @@ body {
 
 
 /* =========================
-   SIDEBAR
+   SIDEBAR (FIXED)
    ========================= */
 
 .minto-sidebar {
     width: 345px;
     min-width: 345px;
-    min-height: 100vh;
+    height: 100vh; /* Фиксируем на всю высоту экрана */
+
+    /* Делаем панель неподвижной */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 
     display: flex;
     flex-direction: column;
@@ -43,6 +49,9 @@ body {
 
     background: #17171b;
     border-right: 1px solid #28282d;
+    
+    /* Добавляем внутренний скролл для панели, если пункты меню вдруг не влезут в экран */
+    overflow-y: auto; 
 }
 
 
@@ -282,16 +291,18 @@ body {
 
 
 /* =========================
-   MAIN
+   MAIN (FIXED POSITION OFFSET)
    ========================= */
 
 .minto-main {
     flex: 1;
-
     min-width: 0;
     min-height: 100vh;
-
     background: #101014;
+
+    /* Сдвигаем центральную часть вправо на ширину левой панели, 
+       чтобы видео не улетали под зафиксированную панель */
+    margin-left: 345px; 
 }
 
 
@@ -307,6 +318,11 @@ body {
 
         padding-left: 20px;
         padding-right: 20px;
+    }
+
+    /* Корректируем сдвиг видео под планшетную ширину панели */
+    .minto-main {
+        margin-left: 250px;
     }
 
     .minto-logo {
@@ -346,6 +362,11 @@ body {
         min-width: 82px;
 
         padding: 22px 10px;
+    }
+
+    /* Корректируем сдвиг под мобильную (узкую) панель */
+    .minto-main {
+        margin-left: 82px;
     }
 
     .minto-logo {

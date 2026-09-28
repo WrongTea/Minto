@@ -1,217 +1,270 @@
-/* =========================
-   ACCOUNT STATUS PAGE
-   ========================= */
+/* =========================================================
+   MINTO DJANGO ADMIN CUSTOM STYLES
+   ========================================================= */
 
-.account-status-page {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 30px;
+/* Общий фон и текст */
+/* Cover native Django widgets too (sidebar, forms, actions and calendars). */
+:root {
+    color-scheme: dark;
+    --primary: #5145e5;
+    --secondary: #202027;
+    --accent: #a49cff;
+    --primary-fg: #ffffff;
+    --body-bg: #101014;
+    --body-fg: #ffffff;
+    --body-quiet-color: #b8bdc9;
+    --body-medium-color: #d0d3dc;
+    --body-loud-color: #ffffff;
+    --header-bg: #17171b;
+    --header-color: #b8bdc9;
+    --header-branding-color: #a49cff;
+    --header-link-color: #ffffff;
+    --breadcrumbs-bg: #17171b;
+    --breadcrumbs-fg: #b8bdc9;
+    --breadcrumbs-link-fg: #d0d3dc;
+    --link-fg: #a49cff;
+    --link-hover-color: #c1bbff;
+    --link-selected-fg: #a49cff;
+    --hairline-color: #28282d;
+    --border-color: #41414b;
+    --darkened-bg: #17171b;
+    --selected-bg: #232329;
+    --selected-row: #302b50;
+    --button-bg: #5145e5;
+    --button-hover-bg: #5c50f2;
+    --default-button-bg: #5145e5;
+    --default-button-hover-bg: #5c50f2;
+    --object-tools-bg: #5145e5;
+    --object-tools-hover-bg: #5c50f2;
+    --close-button-bg: #41414b;
+    --close-button-hover-bg: #555563;
+    --error-fg: #ff9999;
+    --message-debug-bg: #33333b;
+    --message-info-bg: #203d5b;
+    --message-success-bg: #19452c;
+    --message-warning-bg: #514019;
+    --message-error-bg: #542323;
 }
 
-
-/* =========================
-   CARD
-   ========================= */
-
-.account-status-card {
-    width: 100%;
-    max-width: 560px;
-
-    padding: 42px;
-
-    background: #17171b;
-
-    border: 1px solid #28282d;
-    border-radius: 24px;
-
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-
-    text-align: center;
+.theme-toggle {
+    display: none;
 }
 
-
-/* =========================
-   LOGO
-   ========================= */
-
-.account-status-logo {
-    margin-bottom: 30px;
-
-    color: #6257ff;
-
-    font-size: 34px;
-    font-weight: 700;
+:focus-visible {
+    outline: 2px solid #a49cff;
+    outline-offset: 2px;
 }
 
-
-/* =========================
-   TITLE
-   ========================= */
-
-.account-status-title {
-    margin: 0 0 14px;
-
-    color: #ffffff;
-
-    font-size: 30px;
-    font-weight: 700;
+body, #container {
+    background-color: #101014 !important;
+    color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
-
-/* =========================
-   STATUS
-   ========================= */
-
-.account-status-warning {
-    margin: 0 0 12px;
-
-    color: #ff5c5c;
-
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.account-status-good {
-    margin: 0 0 12px;
-
-    color: #70c58a;
-
-    font-size: 18px;
-    font-weight: 600;
-}
-
-
-/* =========================
-   DESCRIPTION
-   ========================= */
-
-.account-status-description {
-    margin: 0 auto 28px;
-
-    max-width: 450px;
-
-    color: #9ca8bd;
-
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-
-/* =========================
-   INFORMATION
-   ========================= */
-
-.account-status-info {
-    width: 100%;
-
-    margin-bottom: 28px;
-    padding: 20px;
-
-    background: #232329;
-
-    border: 1px solid #2c2c33;
-    border-radius: 16px;
-
-    text-align: left;
-}
-
-.account-status-info p {
-    margin: 0 0 12px;
-
-    color: #b8bdc9;
-
-    font-size: 15px;
-    line-height: 1.5;
-}
-
-.account-status-info p:last-child {
-    margin-bottom: 0;
-}
-
-.account-status-info strong {
-    color: #ffffff;
-}
-
-
-/* =========================
-   BUTTON
-   ========================= */
-
-.account-status-button {
-    width: 100%;
-    min-height: 60px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0 24px;
-
-    background: #5145e5;
-
-    border-radius: 16px;
-
-    color: #ffffff;
-
-    font-size: 18px;
-    font-weight: 700;
-
+a:link, a:visited {
+    color: #7380ff;
     text-decoration: none;
-
-    box-shadow: 0 8px 24px rgba(81, 69, 229, 0.25);
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
 }
 
-.account-status-button:hover {
-    background: #5c50f2;
-
-    color: #ffffff;
+a:hover {
+    color: #8490ff;
 }
 
-.account-status-button:active {
-    transform: scale(0.98);
+/* ---------------------------------------------------------
+   HEADER & BRANDING
+   --------------------------------------------------------- */
+#header {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 15px 25px !important;
 }
 
+.minto-brand-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #6257ff;
+    margin-right: 10px;
+}
 
-/* =========================
-   MOBILE
-   ========================= */
+.minto-brand-badge {
+    font-size: 14px;
+    background: #211f3b;
+    color: #7380ff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+}
 
-@media (max-width: 600px) {
+#user-tools {
+    font-size: 14px !important;
+    color: #b8bdc9 !important;
+}
 
-    .account-status-page {
-        padding: 20px;
-    }
+#user-tools a {
+    color: #ffffff !important;
+    background: #232329;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #2c2c33;
+    margin-left: 5px;
+}
 
-    .account-status-card {
-        padding: 30px 22px;
+#user-tools a:hover {
+    background: #2a2a32;
+    border-color: #3b3b45;
+}
 
-        border-radius: 20px;
-    }
+/* ---------------------------------------------------------
+   BREADCRUMBS & MODULES
+   --------------------------------------------------------- */
+div.breadcrumbs {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    color: #9ca8bd !important;
+    padding: 12px 25px !important;
+}
 
-    .account-status-logo {
-        font-size: 30px;
-    }
+div.breadcrumbs a {
+    color: #b8bdc9 !important;
+}
 
-    .account-status-title {
-        font-size: 26px;
-    }
+.module {
+    background: #17171b !important;
+    border: 1px solid #28282d !important;
+    border-radius: 16px !important;
+    margin-bottom: 25px !important;
+}
 
-    .account-status-description {
-        font-size: 15px;
-    }
+.module h2, .module caption, header.module h2 {
+    background: #202027 !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    padding: 12px 20px !important;
+    border-bottom: 1px solid #28282d !important;
+}
 
-    .account-status-button {
-        min-height: 55px;
+/* ---------------------------------------------------------
+   TABLES (CHANGE LIST)
+   --------------------------------------------------------- */
+#changelist table {
+    background: #17171b !important;
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        font-size: 16px;
-    }
+#changelist table thead th {
+    background: #1f1f25 !important;
+    color: #b8bdc9 !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 12px 15px !important;
+}
 
+#changelist table tbody tr {
+    border-bottom: 1px solid #232329 !important;
+}
+
+#changelist table tbody tr:nth-child(odd) {
+    background-color: #17171b !important;
+}
+
+#changelist table tbody tr:nth-child(even) {
+    background-color: #141418 !important;
+}
+
+#changelist table tbody tr:hover {
+    background-color: #202027 !important;
+}
+
+#changelist table td, #changelist table th {
+    padding: 12px 15px !important;
+    color: #ffffff !important;
+}
+
+/* ---------------------------------------------------------
+   FILTERS & SEARCH BAR
+   --------------------------------------------------------- */
+#changelist-filter {
+    background: #17171b !important;
+    border-left: 1px solid #28282d !important;
+}
+
+#changelist-filter h2 {
+    background: #232329 !important;
+    color: #ffffff !important;
+}
+
+#changelist-filter li.selected a {
+    color: #7380ff !important;
+    font-weight: bold;
+}
+
+#toolbar, #changelist-search {
+    background: #17171b !important;
+    border-bottom: 1px solid #28282d !important;
+    padding: 15px !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"], select, textarea {
+    background: #232329 !important;
+    border: 1px solid #2c2c33 !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: #6257ff !important;
+    background: #27272e !important;
+}
+
+/* Фикс чекбоксов, чтобы они сочетались с темной темой */
+input[type="checkbox"] {
+    accent-color: #5145e5;
+    cursor: pointer;
+}
+
+/* ---------------------------------------------------------
+   BUTTONS & ACTIONS (FIXED VIA DEEPER SELECTORS)
+   --------------------------------------------------------- */
+/* Намертво принуждаем блок кнопок стать флекс-контейнером с отступами */
+div.submit-row,
+body #content #content-main form .submit-row,
+#container #content .submit-row {
+    background: #141418 !important;
+    border: 1px solid #28282d !important;
+    border-radius: 16px !important;
+    padding: 15px 20px !important;
+    margin: 25px 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important; /* Именно это свойство создаст зазоры между кнопками */
+    justify-content: flex-start !important;
+}
+
+/* Принудительно изолируем сами кнопки, убирая влияние стандартных инлайновых стилей */
+div.submit-row input,
+div.submit-row input[type="submit"],
+div.submit-row input[type="button"] {
+    background: #5145e5 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin: 0 !important; /* Убираем дефолтные отступы Django */
+    display: inline-block !important;
+    transition: background 0.2s ease, transform 0.1s ease !important;
+}
+/* ---------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------- */
+.minto-admin-footer {
+    text-align: center;
+    padding: 20px;
+    color: #70788a;
+    font-size: 14px;
+    border-top: 1px solid #28282d;
+    margin-top: 40px;
 }

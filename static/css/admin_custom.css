@@ -218,28 +218,93 @@ input[type="text"]:focus, select:focus, textarea:focus {
 }
 
 /* ---------------------------------------------------------
-   BUTTONS & ACTIONS
+   BUTTONS & ACTIONS (FIXED)
    --------------------------------------------------------- */
-.button, input[type="submit"], input[type="button"], .submit-row input {
+/* Жестко переопределяем дефолтную строку кнопок Django */
+.submit-row,
+div.submit-row,
+form .submit-row {
+    background: #17171b !important;
+    border: 1px solid #28282d !important;
+    border-radius: 16px !important;
+    padding: 16px 20px !important;
+    margin: 30px 0 !important;
+    
+    /* Включаем современный Flexbox вместо старых float-стилей Django */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 14px !important; /* Делает одинаковые зазоры между всеми кнопками */
+    float: none !important;
+    clear: both !important;
+}
+
+/* Стилизация самих инпутов-кнопок внутри строки */
+.button, 
+input[type="submit"], 
+input[type="button"], 
+.submit-row input,
+.submit-row input[type="submit"] {
     background: #5145e5 !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
-    padding: 10px 20px !important;
+    padding: 12px 24px !important;
     font-weight: 700 !important;
-    cursor: pointer;
-    transition: background 0.2s ease;
+    font-size: 15px !important;
+    cursor: pointer !important;
+    
+    /* Сбрасываем старые Django-отступы, чтобы работал gap */
+    margin: 0 !important; 
+    float: none !important;
+    display: inline-block !important;
+    height: auto !important;
+    
+    transition: background 0.2s ease, transform 0.1s ease !important;
 }
 
-.button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+/* Эффект наведения */
+.button:hover, 
+input[type="submit"]:hover, 
+input[type="button"]:hover,
+.submit-row input:hover {
     background: #5c50f2 !important;
 }
 
-.button.deletelink, input[type="submit"].deletelink {
-    background: #e54545 !important;
+/* Эффект клика */
+.button:active, 
+input[type="submit"]:active, 
+.submit-row input:active {
+    transform: scale(0.98) !important;
 }
 
-.button.deletelink:hover {
+/* Второстепенные кнопки сохранения делаем чуть темнее для визуальной иерархии */
+.submit-row input[name="_addanother"], 
+.submit-row input[name="_continue"] {
+    background: #392eb1 !important;
+    font-weight: 600 !important;
+}
+
+.submit-row input[name="_addanother"]:hover, 
+.submit-row input[name="_continue"]:hover {
+    background: #4639cb !important;
+}
+
+/* Кнопка удаления */
+.button.deletelink, 
+input[type="submit"].deletelink,
+.submit-row a.deletelink {
+    background: #e54545 !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    float: none !important;
+    display: inline-block !important;
+}
+
+.button.deletelink:hover,
+.submit-row a.deletelink:hover {
     background: #f25050 !important;
 }
 
